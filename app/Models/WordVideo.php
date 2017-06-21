@@ -10,6 +10,7 @@ final class WordVideo extends Model
 {
     public static function getByWord($wordId)
     {
+        $videos = array();
         $rawVideos = static::where('word_id',$wordId)->get();
 
         foreach($rawVideos as $video) {

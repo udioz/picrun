@@ -22,12 +22,14 @@ class SearchController extends Controller
     public function index ($phrase)
     {
         $words = str_word_count($phrase,1);
+
         if (count($words) <= 4)
-          $word[] = $phrase;
+          $words[] = $phrase;
 
         foreach($words as $phrasePart)
         {
             $word = Word::where('name',$phrasePart)->first();
+
             if (!$word) {
                 DB::beginTransaction();
 
@@ -50,7 +52,7 @@ class SearchController extends Controller
             $response[] = [
                 'en' => $phrasePart,
                 'original' => $phrasePart,
-                'is_noun' => false,
+                'is_noun' => $word->is_noun,
                 'images' => $images,
                 'videos' => $videos
             ];

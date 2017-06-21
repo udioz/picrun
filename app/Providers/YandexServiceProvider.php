@@ -27,8 +27,10 @@ class YandexServiceProvider extends ServiceProvider
 
         $this->app->singleton(YandexService::class, function ($app){
             return new YandexService(
-              config('picrun.yandexapis_key'),
-              config('picrun.yandexapis_url')
+              config('picrun.yandexapis_translate_key'),
+              config('picrun.yandexapis_translate_url'),
+              config('picrun.yandexapis_dictionary_key'),
+              config('picrun.yandexapis_dictionary_url')
             );
         });
     }

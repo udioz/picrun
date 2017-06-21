@@ -7,7 +7,10 @@ return [
   'google_images_cx' => env('GOOGLE_IMAGES_CX'),
   'google_videos_cx' => env('GOOGLE_VIDEOS_CX'),
 
-  'yandexapis_key' => env('YANDEXAPIS_KEY'),
-  'yandexapis_url' => env('YANDEXAPIS_URL'),
+  'yandexapis_translate_key' => env('YANDEXAPIS_TRANSLATE_KEY'),
+  'yandexapis_translate_url' => env('YANDEXAPIS_TRANSLATE_URL'),
+
+  'yandexapis_dictionary_key' => env('YANDEXAPIS_DICTIONARY_KEY'),
+  'yandexapis_dictionary_url' => env('YANDEXAPIS_DICTIONARY_URL'),
 
 ];

@@ -57,6 +57,9 @@ class TranslateDictionary extends Command
 
                 $response = json_decode($response);
 
+                // Sometimes the response is not an object. Simply skip...
+                if (!is_object($response)) continue;
+
                 if ($response->code != 200) continue;
 
                 // If there are no letters in response. skip to next one...
@@ -68,7 +71,7 @@ class TranslateDictionary extends Command
                 $translatedWord = preg_replace('/[^\w\s]+/u','' , $translatedWord);
 
                 // if the translated Word is empty after cleaning.
-                if (strlen($translatedWord) == 0) continue;
+                if (strlen(trim($translatedWord)) == 0) continue;
 
                 // Checking if translation really ocuured. if not skip to next...
                 $langs = $this->ld->detect($translatedWord)

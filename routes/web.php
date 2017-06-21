@@ -10,14 +10,14 @@ $app->group(['prefix' => 'api/v1'],function ($app) {
 
 $app->get('/', function () use ($app) {
 
-    $text = 'לכאורה.---';
-    $after = $after = preg_replace('/[^\w\s]+/u','' , $text);;
-    dd($after);
+    // $text = '^ ';
+    // $after = trim(preg_replace('/[^\w\s]+/u','' , $text));
+    // dd($after);
 
 
     $yandexService = app('App\Picrun\Yandex\YandexService');
-    $response = $yandexService->translate('allegedly','en-he');
-
+    $response = $yandexService->translate('Chagatai','en-he');
+dd($response);
     $response = json_decode($response);
     dd(preg_match("/[a-z]/i", $response->text[0]));
     //dd(strlen($response->text[0]));
