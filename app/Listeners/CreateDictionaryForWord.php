@@ -7,29 +7,41 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Models\Dictionary;
+use LanguageDetection\Language;
 
 class CreateDictionaryForWord
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected $languageDetector;
+    protected $yandexService;
+
+    public function __construct(Language $ld)
     {
-        //
+        $this->languageDetector = $ld;
+        $this->yandexService = app('App\Picrun\Yandex\YandexService');
+
     }
 
 
     public function handle(WordCreated $event)
     {
-
         $dictionary = Dictionary::where('word',$event->word->name)->first();
 
         if (!$dictionary) {
+            $langs = $this->languageDetector->detect($event->word->name)
+                      ->close();
+            $lang = isset(array_keys($langs)[0]) ? array_keys($langs)[0] : 'en';
 
-            $yandexService = app('App\Picrun\Yandex\YandexService');
-            $response = $yandexService->dictionary($event->word->name);
+            if ($lang != 'en') {
+                $response = $this->yandexService
+                    ->translate($event->word->name,$lang.'-en');
+
+                $response = json_decode($response);
+                $englishTranslatedWord = isset($response->text[0]) ? $response->text[0] : 'never';
+            } else {
+                $englishTranslatedWord = $event->word->name;
+            }
+
+            $response = $this->yandexService->dictionary($englishTranslatedWord);
 
             $response = json_decode($response);
 
@@ -39,8 +51,8 @@ class CreateDictionaryForWord
                 $isNoun = false;
 
             $dictionary = new Dictionary;
-            $dictionary->word = $this->name;
-            $dictionary->language_code = 'en';
+            $dictionary->word = $event->word->name;
+            $dictionary->language_code = $lang;
             $dictionary->is_noun = ($isNoun == 'noun');
             $dictionary->save();
         }

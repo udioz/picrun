@@ -24,7 +24,7 @@ class YandexService
         $response = Curl::to($this->apiTranslateUrl)
           ->withData([
             'key' => $this->apiTranslateKey,
-            'text' => urlencode($phrase),
+            'text' => $phrase,
             'lang' => $fromToLanguage,
           ])
           ->get();
@@ -38,7 +38,7 @@ class YandexService
         $response = Curl::to($this->apiDictionaryUrl)
           ->withData([
             'key' => $this->apiDictionaryKey,
-            'text' => urlencode($phrase),
+            'text' => $phrase,
             'lang' => $fromToLanguage,
           ])
           ->get();

@@ -21,12 +21,12 @@ class GoogleService
     public function getMedia($phrase)
     {
         return [
-          'images' => $this->createImages($phrase),
-          'videos' => $this->createVideos($phrase)
+          'images' => $this->getImages($phrase),
+          'videos' => $this->getVideos($phrase)
         ];
     }
 
-    protected function createImages($phrase)
+    public function getImages($phrase)
     {
         for ($page=1 ; $page <= 3 ; $page ++)
         {
@@ -51,7 +51,7 @@ class GoogleService
         return array_dot($items);
     }
 
-    protected function createVideos($phrase)
+    public function getVideos($phrase)
     {
         for ($page=1 ; $page <= 3 ; $page ++)
         {

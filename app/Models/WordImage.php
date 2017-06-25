@@ -15,7 +15,7 @@ final class WordImage extends Model
 
         foreach ($rawImages as $image) {
           $images[] = [
-            'url' => 'http://159.203.126.231/images/' . $image->id . '.jpg'
+            'url' => $image->url  //'http://159.203.126.231/images/' . $image->id . '.jpg'
           ];
 
         }

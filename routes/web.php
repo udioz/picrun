@@ -8,31 +8,11 @@ $app->group(['prefix' => 'api/v1'],function ($app) {
 });
 
 
-$app->get('/', function () use ($app) {
+$app->get('/admin/wordImages/{phrase}', function ($phrase) use ($app) {
+    $gs = app('App\Picrun\Google\GoogleService');
+    $images = $gs->getImages($phrase);
 
-    // $text = '^ ';
-    // $after = trim(preg_replace('/[^\w\s]+/u','' , $text));
-    // dd($after);
+    return view('admin.wordImages',compact('images'));
 
-
-    $yandexService = app('App\Picrun\Yandex\YandexService');
-    $response = $yandexService->translate('Chagatai','en-he');
-dd($response);
-    $response = json_decode($response);
-    dd(preg_match("/[a-z]/i", $response->text[0]));
-    //dd(strlen($response->text[0]));
-
-    $ld = new Language;//(['en','he']);
-
-    $langs = $ld->detect($response->text[0])->whitelist('en','he')->close();
-
-    dd($langs);
-
-    if (!(array_keys($langs)[0] == 'he' && $langs['en'] == 0))
-      echo 'en';
-    else {
-      echo 'he';
-    }
-dd();
     return $app->version();
 });

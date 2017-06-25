@@ -21,8 +21,11 @@ class SearchController extends Controller
 
     public function index ($phrase)
     {
-        $words = str_word_count($phrase,1);
+        // Clean phrase
+        $phrase = urldecode($phrase);
+        $phrase = preg_replace('/[^\w\s]+/u','' , $phrase);
 
+        $words = explode(" ",$phrase);
         if (count($words) <= 4)
           $words[] = $phrase;
 
