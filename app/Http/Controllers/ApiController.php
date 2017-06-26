@@ -7,7 +7,7 @@ use App\Models\WordImage;
 use App\Models\WordVideo;
 use DB;
 
-class SearchController extends Controller
+class ApiController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -19,7 +19,7 @@ class SearchController extends Controller
         //
     }
 
-    public function index ($phrase)
+    public function search ($phrase)
     {
         // Clean phrase
         $phrase = urldecode($phrase);
@@ -65,7 +65,18 @@ class SearchController extends Controller
 
         $response = ['response' => $response];
 
+        // Use this line to return json without extra slashes.
+        // return json_encode($response,JSON_UNESCAPED_SLASHES);
+
         return $response;
-    } // end of function index
+
+    } // end of function search
+
+    public function removeImage($url)
+    {
+        return [
+            'code' => '200'
+        ];
+    }
 
 } // end of class

@@ -28,6 +28,8 @@ $app->withFacades();
 $app->withEloquent();
 
 class_alias('Ixudra\Curl\Facades\Curl','Curl');
+class_alias('Intervention\Image\Facades\Image','Image');
+class_alias('Illuminate\Support\Facades\Storage', 'Storage');
 
 
 /*
@@ -88,6 +90,8 @@ $app->register(App\Providers\GoogleServiceProvider::class);
 $app->register(App\Providers\YandexServiceProvider::class);
 $app->register(Vluzrmos\Tinker\TinkerServiceProvider::class);
 $app->register(Ixudra\Curl\CurlServiceProvider::class);
+$app->register(Intervention\Image\ImageServiceProviderLumen::class);
+$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -106,5 +110,6 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
 
 $app->configure('app');
 $app->configure('picrun');
+$app->configure('filesystems');
 
 return $app;

@@ -5,9 +5,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Events\WordImageCreated;
 
 final class WordImage extends Model
 {
+    protected $events = [
+      "created" => WordImageCreated::class
+    ];
+
     public static function getByWord($wordId)
     {
         $images = array();
@@ -19,7 +24,6 @@ final class WordImage extends Model
           ];
 
         }
-
         return $images;
     }
 

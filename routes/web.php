@@ -4,7 +4,8 @@
 
 
 $app->group(['prefix' => 'api/v1'],function ($app) {
-    $app->get('search/{phrase}','SearchController@index');
+    $app->get('search/{phrase}','ApiController@search');
+    $app->get('removeImage/{url}','ApiController@removeImage');
 });
 
 
@@ -15,4 +16,13 @@ $app->get('/admin/wordImages/{phrase}', function ($phrase) use ($app) {
     return view('admin.wordImages',compact('images'));
 
     return $app->version();
+});
+
+$app->get('/', function () use ($app) {
+
+  $img = Image::make('https://www.dev-metal.com/wp-content/uploads/2014/01/php-1.jpg')
+      ->resize(300, 200);
+
+  return $img->response('jpg');
+
 });
