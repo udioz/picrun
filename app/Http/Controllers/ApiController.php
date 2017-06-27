@@ -6,6 +6,9 @@ use App\Models\Word;
 use App\Models\WordImage;
 use App\Models\WordVideo;
 use DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class ApiController extends Controller
 {
@@ -72,10 +75,14 @@ class ApiController extends Controller
 
     } // end of function search
 
-    public function removeImage($url)
+    public function removeImage(Request $request)
     {
+        $this->validate($request,[
+            'id'  => 'required'
+        ]);
+
         return [
-            'code' => '200'
+          'code' => '200'
         ];
     }
 

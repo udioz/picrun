@@ -5,7 +5,7 @@
 
 $app->group(['prefix' => 'api/v1'],function ($app) {
     $app->get('search/{phrase}','ApiController@search');
-    $app->get('removeImage/{url}','ApiController@removeImage');
+    $app->post('removeImage/','ApiController@removeImage');
 });
 
 
