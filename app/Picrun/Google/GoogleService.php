@@ -113,7 +113,7 @@ class GoogleService
                   }
               }
 
-              if ($items)
+              if (isset($items))
                 $weHaveEnough = (count($items) >= $this->gifsRequired);
         }
 
