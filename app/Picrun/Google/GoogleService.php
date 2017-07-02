@@ -113,7 +113,8 @@ class GoogleService
                   }
               }
 
-              $weHaveEnough = (count($items) >= $this->gifsRequired);
+              if ($items)
+                $weHaveEnough = (count($items) >= $this->gifsRequired);
         }
 
         return $items;
