@@ -10,45 +10,151 @@ class GoogleService
     protected $imagesCX;
     protected $videosCX;
 
-    public function __construct($apiKey,$apiUrl,$imagesCX,$videosCX)
+    protected $imagesRequired;
+    protected $gifsRequired;
+    protected $stickersRequired;
+    protected $minByteSize;
+    protected $maxByteSize;
+
+    public function __construct($apiKey,$apiUrl,$imagesCX,$videosCX,
+                                $imagesRequired,$gifsRequired,$stickersRequired,
+                                $minByteSize,$maxByteSize)
     {
         $this->apiKey = $apiKey;
         $this->apiUrl = $apiUrl;
         $this->imagesCX = $imagesCX;
         $this->videosCX = $videosCX;
+        $this->imagesRequired = $imagesRequired;
+        $this->gifsRequired = $gifsRequired;
+        $this->stickersRequired = $stickersRequired;
+        $this->minByteSize = $minByteSize;
+        $this->maxByteSize = $maxByteSize;
     }
 
     public function getMedia($phrase)
     {
         return [
-          'images' => $this->getImages($phrase),
-          'videos' => $this->getVideos($phrase)
+          'images'   => $this->getImages($phrase),
+          'gifs'     => $this->getGifs($phrase),
+          'stickers' => $this->getStickers($phrase),
+          'videos'   => $this->getVideos($phrase)
         ];
     }
 
     public function getImages($phrase)
     {
-        for ($page=1 ; $page <= 3 ; $page ++)
-        {
+        $weHaveEnough = false;
+        $page = 0;
+
+        while (!$weHaveEnough) {
+          $page++;
           $response = Curl::to($this->apiUrl)
-            ->withData([
-              'q' => $phrase,
-              'cx' => $this->imagesCX,
-              'key' => $this->apiKey,
-              'searchType' => 'image',
-              'imgType' => 'photo',
-              'fields' => 'items(link,mime,image(byteSize))',
-              'imgSize' => 'medium',
-              'num' => 10,
-              'start' => $page * 10
-            ])
-            ->get();
+              ->withData([
+                'q' => $phrase,
+                'cx' => $this->imagesCX,
+                'key' => $this->apiKey,
+                'searchType' => 'image',
+                'imgType' => 'photo',
+                'fields' => 'items(link,mime,image(byteSize))',
+                'imgSize' => 'large',
+                'fileType' => 'jpg,png,jpeg',
+                'num' => 10,
+                'start' => $page
+              ])
+              ->get();
 
-            if (json_decode($response)->items)
-              $items[] = json_decode($response)->items;
+              foreach(json_decode($response)->items as $item)
+              {
+                  if (($item->image->byteSize > $this->minByteSize)
+                      && ($item->image->byteSize < $this->maxByteSize))
+                  {
+                      $items[] = $item;
 
+                      if (count($items) == $this->imagesRequired) break;
+                  }
+              }
+
+              $weHaveEnough = (count($items) >= $this->imagesRequired);
         }
-        return array_dot($items);
+
+        return $items;
+    }
+
+    public function getGifs($phrase)
+    {
+        $weHaveEnough = false;
+        $page = 0;
+
+        while (!$weHaveEnough) {
+          $page++;
+          $response = Curl::to($this->apiUrl)
+              ->withData([
+                'q' => $phrase . ' gifs',
+                'cx' => $this->imagesCX,
+                'key' => $this->apiKey,
+                'searchType' => 'image',
+                'imgType' => 'photo',
+                'fields' => 'items(link,mime,image(byteSize))',
+                'imgSize' => 'large',
+                'fileType' => 'gif',
+                'num' => 10,
+                'start' => $page
+              ])
+              ->get();
+
+              foreach(json_decode($response)->items as $item)
+              {
+                  if (($item->image->byteSize > $this->minByteSize)
+                      && ($item->image->byteSize < $this->maxByteSize))
+                  {
+                      $items[] = $item;
+
+                      if (count($items) == $this->gifsRequired) break;
+                  }
+              }
+
+              $weHaveEnough = (count($items) >= $this->gifsRequired);
+        }
+
+        return $items;
+    }
+
+    public function getStickers($phrase)
+    {
+        $weHaveEnough = false;
+        $page = 0;
+
+        while (!$weHaveEnough) {
+          $page++;
+          $response = Curl::to($this->apiUrl)
+              ->withData([
+                'q' => $phrase . ' sticker',
+                'cx' => $this->imagesCX,
+                'key' => $this->apiKey,
+                'searchType' => 'image',
+                'imgType' => 'photo',
+                'fields' => 'items(link,mime,image(byteSize))',
+                'imgSize' => 'large',
+                'num' => 10,
+                'start' => $page
+              ])
+              ->get();
+
+              foreach(json_decode($response)->items as $item)
+              {
+                  if (($item->image->byteSize > $this->minByteSize)
+                      && ($item->image->byteSize < $this->maxByteSize))
+                  {
+                      $items[] = $item;
+
+                      if (count($items) == $this->stickersRequired) break;
+                  }
+              }
+
+              $weHaveEnough = (count($items) >= $this->stickersRequired);
+        }
+
+        return $items;
     }
 
     public function getVideos($phrase)

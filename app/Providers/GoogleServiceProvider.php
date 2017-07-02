@@ -30,7 +30,12 @@ class GoogleServiceProvider extends ServiceProvider
               config('picrun.googleapis_key'),
               config('picrun.googleapis_url'),
               config('picrun.google_images_cx'),
-              config('picrun.google_videos_cx')
+              config('picrun.google_videos_cx'),
+              config('picrun.google_images_required'),
+              config('picrun.google_gifs_required'),
+              config('picrun.google_stickers_required'),
+              config('picrun.google_min_bytesize'),
+              config('picrun.google_max_bytesize')
             );
         });
     }

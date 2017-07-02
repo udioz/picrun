@@ -12,8 +12,12 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
         '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
-        '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
+        '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         'bee9632da3ca00a99623b9c35d0c4f8b' => __DIR__ . '/..' . '/laravel/lumen-framework/src/helpers.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
@@ -32,6 +36,7 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
+            'Watson\\Rememberable\\' => 20,
         ),
         'V' => 
         array (
@@ -67,9 +72,14 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         ),
         'L' => 
         array (
+            'League\\Flysystem\\AwsS3v3\\' => 25,
             'League\\Flysystem\\' => 17,
             'Laravel\\Lumen\\' => 14,
             'LanguageDetection\\' => 18,
+        ),
+        'J' => 
+        array (
+            'JmesPath\\' => 9,
         ),
         'I' => 
         array (
@@ -101,6 +111,8 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
         ),
         'F' => 
         array (
@@ -120,6 +132,7 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         ),
         'A' => 
         array (
+            'Aws\\' => 4,
             'App\\' => 4,
         ),
     );
@@ -138,6 +151,10 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'Watson\\Rememberable\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/watson/rememberable/src',
         ),
         'Vluzrmos\\Tinker\\' => 
         array (
@@ -219,6 +236,10 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
+        'League\\Flysystem\\AwsS3v3\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem-aws-s3-v3/src',
+        ),
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
@@ -230,6 +251,10 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         'LanguageDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/patrickschur/language-detection/src/LanguageDetection',
+        ),
+        'JmesPath\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mtdowling/jmespath.php/src',
         ),
         'Ixudra\\Curl\\' => 
         array (
@@ -332,6 +357,14 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
@@ -359,6 +392,10 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
+        ),
+        'Aws\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aws/aws-sdk-php/src',
         ),
         'App\\' => 
         array (
@@ -402,7 +439,9 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
     );
 
     public static $classMap = array (
+        'AddS3ToWordImages' => __DIR__ . '/../..' . '/database/migrations/2017_06_29_185718_add_s3_to_word_images.php',
         'CreateDictionaryTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_16_060554_create_dictionary_table.php',
+        'CreateJobsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_30_042049_create_jobs_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'ExampleTest' => __DIR__ . '/../..' . '/tests/ExampleTest.php',
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',

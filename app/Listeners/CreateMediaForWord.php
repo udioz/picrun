@@ -26,9 +26,9 @@ class CreateMediaForWord
     {
         $googleService = app('App\Picrun\Google\GoogleService');
         $media = $googleService->getMedia($event->word->name);
-        //dd($media);
+        $allWordImages = array_merge($media['images'],$media['gifs'],$media['stickers']);
 
-        foreach ($media['images'] as $item)
+        foreach ($allWordImages as $item)
         {
             $wordImage = new WordImage;
             $wordImage->word_id = $event->word->id;

@@ -69,9 +69,9 @@ class ApiController extends Controller
         $response = ['response' => $response];
 
         // Use this line to return json without extra slashes.
-        // return json_encode($response,JSON_UNESCAPED_SLASHES);
+         return json_encode($response,JSON_UNESCAPED_SLASHES);
 
-        return $response;
+        //return $response;
 
     } // end of function search
 

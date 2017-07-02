@@ -6,7 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddS3ToWordImages' => $baseDir . '/database/migrations/2017_06_29_185718_add_s3_to_word_images.php',
     'CreateDictionaryTable' => $baseDir . '/database/migrations/2017_06_16_060554_create_dictionary_table.php',
+    'CreateJobsTable' => $baseDir . '/database/migrations/2017_06_30_042049_create_jobs_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'ExampleTest' => $baseDir . '/tests/ExampleTest.php',
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',

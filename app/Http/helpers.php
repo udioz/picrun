@@ -1,5 +1,13 @@
 <?php
 
+function imageSuffix($mime) {
+    $suffix = explode("/",$mime);
+    $suffix = $suffix[1];
+    if ($suffix == 'jpeg') $suffix = 'jpg';
+    return $suffix;
+}
+
+
 function count_words($string) {
     // Return the number of words in a string.
     $string= str_replace("&#039;", "'", $string);
