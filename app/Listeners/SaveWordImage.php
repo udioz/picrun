@@ -35,7 +35,7 @@ class SaveWordImage implements ShouldQueue
         Storage::put($path, (string) $img, 'public');
         $event->wordImage->s3_path = $path;
         $event->wordImage->save();
-        $img->destroy();
+        //$img->destroy();
     }
 
     // protected function format($wordImage)
