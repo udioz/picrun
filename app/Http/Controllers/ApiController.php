@@ -29,7 +29,8 @@ class ApiController extends Controller
         $phrase = preg_replace('/[^\w\s]+/u','' , $phrase);
 
         $words = explode(" ",$phrase);
-        if (count($words) <= 4)
+
+        if (count($words) <= 4 && count($words) > 1)
           $words[] = $phrase;
 
         foreach($words as $phrasePart)
