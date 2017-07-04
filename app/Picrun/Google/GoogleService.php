@@ -193,11 +193,18 @@ class GoogleService
               ])
               ->get();
 
-            if (json_decode($response)->items)
-              $items[] = json_decode($response)->items;
-        }
+            if (!isset(json_decode($response)->items))
+                continue;
 
-        return array_dot($items);
+            foreach (json_decode($response)->items as $item) {
+                if (isset($item->pagemap)) {
+                    $items[] = $item;
+                }
+            }
+
+
+        }
+        return $items;
 
     }
 
