@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
+use Illuminate\Support\Facades\Log;
 
 
 class SaveWordImage implements ShouldQueue
@@ -20,22 +21,26 @@ class SaveWordImage implements ShouldQueue
 
     public function handle(WordImageCreated $event)
     {
-        $suffix = imageSuffix($event->wordImage->image_content_type);
-
         try {
-            $img = Image::make($event->wordImage->url)
-                       ->stream($suffix); // <-- Key point
-        } catch (Exception $e) {
+          $suffix = imageSuffix($event->wordImage->image_content_type);
+
+          $img = Image::make($event->wordImage->url)
+                     ->stream($suffix); // <-- Key point
+
+          $path = $event->wordImage->created_at->format('Y/m/d/') .
+                  $event->wordImage->id . '.' . $suffix;
+          //
+          Storage::put($path, (string) $img, 'public');
+          $event->wordImage->s3_path = $path;
+          $event->wordImage->save();
+          unset($img);
+        } catch (\Intervention\Image\Exception\NotReadableException $e) {
+          Log::info('Not Readable Exception caught. Deleting Image ' , ['id' => $event->wordImage->id]);
+          $event->wordImage->delete();
+
+        } catch (\Exception $e) {
             //
         }
-
-        $path = $event->wordImage->created_at->format('Y/m/d/') .
-                $event->wordImage->id . '.' . $suffix;
-        //
-        Storage::put($path, (string) $img, 'public');
-        $event->wordImage->s3_path = $path;
-        $event->wordImage->save();
-        //$img->destroy();
     }
 
     // protected function format($wordImage)

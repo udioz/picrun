@@ -31,6 +31,11 @@ class GoogleService
         $this->maxByteSize = $maxByteSize;
     }
 
+    public function setImagesRequired($imagesRequired)
+    {
+        $this->imagesRequired = $imagesRequired;
+    }
+
     public function getMedia($phrase)
     {
         return [

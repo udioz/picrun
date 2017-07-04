@@ -15,7 +15,9 @@ class Kernel extends ConsoleKernel
     protected $commands = [
       Commands\InitWords::class,
       Commands\BuildEnglishDictionary::class,
-      Commands\TranslateDictionary::class
+      Commands\TranslateDictionary::class,
+      Commands\CompleteWordImages::class,
+      Commands\Test::class
     ];
 
     /**
