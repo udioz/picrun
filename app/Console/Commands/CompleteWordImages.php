@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Log;
 
 class CompleteWordImages extends Command
 {
-    protected $signature = 'picrun:complete-word-images';
+    protected $signature = 'picrun:complete-word-images {start_id=1} {chunk=100} {--chunkonly}';
 
-    protected $description = 'Complete Words Images and upload to s3';
+    protected $description = 'Complete Words Images and upload to s3. To do only one word set the second arg to 1.';
 
     protected $imagesRequired = 30;
 
@@ -30,7 +30,9 @@ class CompleteWordImages extends Command
      */
     public function handle()
     {
-        DB::table('words')->orderBy('id')->chunk('100',function($words){
+        DB::table('words')
+          ->where('id','>=',$this->argument('start_id'))
+          ->orderBy('id')->chunk($this->argument('chunk'),function($words){
             foreach ($words as $word)
             {
                 Log::info('Processing word: ',['word'=> $word->name , 'id' => $word->id]);
@@ -70,6 +72,9 @@ class CompleteWordImages extends Command
                 Log::info('End Processing word: ',['word'=>$word->name]);
 
             } // end foreach
+
+            if ($this->option('chunkonly'))
+                return false;
         });
     } // end function handle
 }
