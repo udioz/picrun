@@ -70,7 +70,6 @@ class CompleteWordImages extends Command
                 Log::info('End Processing word: ',['word'=>$word->name]);
 
             } // end foreach
-            return false;
         });
     } // end function handle
 }
