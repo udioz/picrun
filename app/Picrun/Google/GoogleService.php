@@ -50,6 +50,7 @@ class GoogleService
     {
         $weHaveEnough = false;
         $page = 0;
+        $items = array();
 
         while (!$weHaveEnough) {
           $page++;
@@ -67,6 +68,10 @@ class GoogleService
                 'start' => $page
               ])
               ->get();
+
+              if (!isset(json_decode($response)->items))
+                  break;
+
 
               foreach(json_decode($response)->items as $item)
               {
@@ -89,6 +94,7 @@ class GoogleService
     {
         $weHaveEnough = false;
         $page = 0;
+        $items = array();
 
         while (!$weHaveEnough) {
           $page++;
@@ -106,6 +112,9 @@ class GoogleService
                 'start' => $page
               ])
               ->get();
+
+              if (!isset(json_decode($response)->items))
+                  break;
 
               foreach(json_decode($response)->items as $item)
               {
@@ -129,6 +138,7 @@ class GoogleService
     {
         $weHaveEnough = false;
         $page = 0;
+        $items = array();
 
         while (!$weHaveEnough) {
           $page++;
@@ -145,6 +155,9 @@ class GoogleService
                 'start' => $page
               ])
               ->get();
+
+              if (!isset(json_decode($response)->items))
+                  break;
 
               foreach(json_decode($response)->items as $item)
               {
@@ -165,6 +178,8 @@ class GoogleService
 
     public function getVideos($phrase)
     {
+        $items = array();
+
         for ($page=1 ; $page <= 3 ; $page ++)
         {
             $response = Curl::to($this->apiUrl)
