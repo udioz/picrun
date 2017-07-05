@@ -8,8 +8,8 @@ return [
   'google_videos_cx' => env('GOOGLE_VIDEOS_CX'),
 
   'google_images_required' => 20,
-  'google_gifs_required' => 5,
-  'google_stickers_required' => 5,
+  'google_gifs_required' => 10,
+  'google_stickers_required' => 10,
   'google_min_bytesize' => 15000,
   'google_max_bytesize' => 150000,
 

@@ -15,7 +15,6 @@ $app->get('/admin/wordImages/{phrase}', function ($phrase) use ($app) {
 
     return view('admin.wordImages',compact('images'));
 
-    return $app->version();
 });
 
 $app->get('/', function () use ($app) {
