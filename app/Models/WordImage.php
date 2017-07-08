@@ -16,14 +16,23 @@ final class WordImage extends Model
       "created" => WordImageCreated::class
     ];
 
-    public static function getByWord($wordId)
-    {
-        $images = array();
-
+    public static function getByWordAsync($wordId){
         do {
-          //sleep(1);
           $rawImages = static::where('word_id',$wordId)->get();
         } while (count($rawImages) <= 12);
+
+        return static::normalize($rawImages);
+    }
+
+    public static function getByWord($wordId)
+    {
+        $rawImages = static::where('word_id',$wordId)->get();
+        return static::normalize($rawImages);
+    }
+
+    protected static function normalize($rawImages)
+    {
+        $images = array();
 
         foreach ($rawImages as $image) {
           $url = isset($image->s3_path) ? config('picrun.aws_path') . $image->s3_path : $image->url;

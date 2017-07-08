@@ -38,22 +38,20 @@ class ApiController extends Controller
             $word = Word::where('name',$phrasePart)->first();
 
             if (!$word) {
-                DB::beginTransaction();
-
                 // New phrase - add it to DB
                 $word = new Word;
                 $word->name = $phrasePart;
                 $word->usage_counter = 1;
                 $word->save();
 
-                DB::commit();
+                $images = WordImage::getByWordAsync($word->id);
             } else {
                 $word->usage_counter++;
                 $word->save();
+
+                $images = WordImage::getByWord($word->id);
             }
 
-            // word in DB - get images and videos.
-            $images = WordImage::getByWord($word->id);
             $videos = WordVideo::getByWord($word->id);
 
             $response[] = [
