@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\File;
+//use Illuminate\Http\File;
 use Illuminate\Support\Facades\Log;
 
 
@@ -25,11 +25,11 @@ class SaveWordImage implements ShouldQueue
           $suffix = imageSuffix($event->wordImage->image_content_type);
 
           $img = Image::make($event->wordImage->url)
-                     ->stream($suffix); // <-- Key point
+                    ->stream($suffix); // <-- Key point
 
           $path = $event->wordImage->created_at->format('Y/m/d/') .
-                  $event->wordImage->id . '.' . $suffix;
-          //
+                 $event->wordImage->id . '.' . $suffix;
+
           Storage::put($path, (string) $img, 'public');
           $event->wordImage->s3_path = $path;
           $event->wordImage->save();
@@ -43,11 +43,4 @@ class SaveWordImage implements ShouldQueue
         }
     }
 
-    // protected function format($wordImage)
-    // {
-    //     $format = explode("/",$wordImage->image_content_type);
-    //     $format = $format[1];
-    //     if ($format == 'jpeg') $format = 'jpg';
-    //     return $format;
-    // }
 }

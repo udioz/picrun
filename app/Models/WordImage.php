@@ -19,7 +19,11 @@ final class WordImage extends Model
     public static function getByWord($wordId)
     {
         $images = array();
-        $rawImages = static::where('word_id',$wordId)->get();
+
+        do {
+          //sleep(1);
+          $rawImages = static::where('word_id',$wordId)->get();
+        } while (count($rawImages) <= 12);
 
         foreach ($rawImages as $image) {
           $url = isset($image->s3_path) ? config('picrun.aws_path') . $image->s3_path : $image->url;

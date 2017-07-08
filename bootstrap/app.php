@@ -111,5 +111,6 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
 $app->configure('app');
 $app->configure('picrun');
 $app->configure('filesystems');
+$app->configure('queue');
 
 return $app;

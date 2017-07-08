@@ -440,7 +440,9 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
 
     public static $classMap = array (
         'AddS3ToWordImages' => __DIR__ . '/../..' . '/database/migrations/2017_06_29_185718_add_s3_to_word_images.php',
+        'AddWordImagesUniqueIndexWordidurl' => __DIR__ . '/../..' . '/database/migrations/2017_07_07_054849_add_word_images_unique_index_wordidurl.php',
         'CreateDictionaryTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_16_060554_create_dictionary_table.php',
+        'CreateFailedJobsTable' => __DIR__ . '/../..' . '/database/migrations/2017_07_07_120649_create_failed_jobs_table.php',
         'CreateJobsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_30_042049_create_jobs_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'ExampleTest' => __DIR__ . '/../..' . '/tests/ExampleTest.php',

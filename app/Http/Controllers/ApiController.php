@@ -87,4 +87,10 @@ class ApiController extends Controller
         ];
     }
 
+    public function adminSearch($phrase)
+    {
+        $json = $this->search($phrase);
+        $data = json_decode($json,true);
+        return view('admin.search',compact('data'));
+    }
 } // end of class

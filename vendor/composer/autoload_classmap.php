@@ -7,7 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'AddS3ToWordImages' => $baseDir . '/database/migrations/2017_06_29_185718_add_s3_to_word_images.php',
+    'AddWordImagesUniqueIndexWordidurl' => $baseDir . '/database/migrations/2017_07_07_054849_add_word_images_unique_index_wordidurl.php',
     'CreateDictionaryTable' => $baseDir . '/database/migrations/2017_06_16_060554_create_dictionary_table.php',
+    'CreateFailedJobsTable' => $baseDir . '/database/migrations/2017_07_07_120649_create_failed_jobs_table.php',
     'CreateJobsTable' => $baseDir . '/database/migrations/2017_06_30_042049_create_jobs_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'ExampleTest' => $baseDir . '/tests/ExampleTest.php',

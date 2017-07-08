@@ -6,8 +6,11 @@ use App\Events\WordCreated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\Models\WordImage;
-use App\Models\WordVideo;
+use App\Jobs\GoogleImagesJob;
+use App\Jobs\GoogleVideosJob;
+
+// use App\Models\WordImage;
+// use App\Models\WordVideo;
 
 class CreateMediaForWord
 {
@@ -24,6 +27,31 @@ class CreateMediaForWord
 
     public function handle(WordCreated $event)
     {
+        for ($i=1 ; $i <= 4 ; $i++) {
+            $job = new GoogleImagesJob($event->word,$i);
+            $job->onQueue('google_curls');
+            dispatch($job);
+        }
+
+        for ($i=1 ; $i <= 2 ; $i++) {
+          $job = new GoogleImagesJob($event->word,$i,'gifs');//->onQueue('google_curls');
+          $job->onQueue('google_curls');
+          dispatch($job);
+        }
+
+        for ($i=1 ; $i <= 2 ; $i++) {
+          $job = new GoogleImagesJob($event->word,$i,'stickers');//->onQueue('google_curls');
+          $job->onQueue('google_curls');
+          dispatch($job);
+        }
+
+        for ($i=1 ; $i <= 3 ; $i++) {
+          $job = new GoogleVideosJob($event->word,$i);
+          $job->onQueue('google_curls');
+          dispatch($job);
+        }
+
+        /*
         $googleService = app('App\Picrun\Google\GoogleService');
         $media = $googleService->getMedia($event->word->name);
         $allWordImages = array_merge($media['images'],$media['gifs'],$media['stickers']);
@@ -49,6 +77,7 @@ class CreateMediaForWord
             $wordVideo->url = $item->link;
             $wordVideo->save();
         }
+        */
 
     }
 }
