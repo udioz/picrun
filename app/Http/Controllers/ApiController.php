@@ -33,6 +33,8 @@ class ApiController extends Controller
         if (count($words) <= 4 && count($words) > 1)
           $words[] = $phrase;
 
+        $oneWordOnly = (count($words) == 1) ? true : false;
+
         foreach($words as $phrasePart)
         {
             $word = Word::where('name',$phrasePart)->first();
@@ -45,14 +47,26 @@ class ApiController extends Controller
                 $word->save();
 
                 $images = WordImage::getByWordAsync($word->id);
-                $videos = WordVideo::getByWordAsync($word->id);
+
+                if (count_words($word->name) > 1 || $oneWordOnly) {
+                    $videos = WordVideo::getByWordAsync($word->id);
+                } else {
+                    $videos = [];
+                }
+
                 $isNoun = $word->is_noun;
             } else {
+                // Word already exist in DB
                 $word->usage_counter++;
                 $word->save();
 
                 $images = WordImage::getByWord($word->id);
-                $videos = WordVideo::getByWord($word->id);
+
+                if (count_words($word->name) > 1 || $oneWordOnly) {
+                    $videos = WordVideo::getByWord($word->id);
+                } else {
+                    $videos = [];
+                }
                 $isNoun = 1;
             }
 
