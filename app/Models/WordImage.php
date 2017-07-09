@@ -27,6 +27,7 @@ final class WordImage extends Model
     public static function getByWord($wordId)
     {
         $rawImages = static::where('word_id',$wordId)->get();
+        //if (count($rawImages) < 30)
         return static::normalize($rawImages);
     }
 

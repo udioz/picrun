@@ -45,16 +45,17 @@ class ApiController extends Controller
                 $word->save();
 
                 $images = WordImage::getByWordAsync($word->id);
+                $videos = WordVideo::getByWordAsync($word->id);
                 $isNoun = $word->is_noun;
             } else {
                 $word->usage_counter++;
                 $word->save();
 
                 $images = WordImage::getByWord($word->id);
+                $videos = WordVideo::getByWord($word->id);
                 $isNoun = 1;
             }
 
-            $videos = WordVideo::getByWord($word->id);
 
             $response[] = [
                 'en' => $phrasePart,
