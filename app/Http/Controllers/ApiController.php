@@ -30,7 +30,7 @@ class ApiController extends Controller
 
         $words = explode(" ",$phrase);
 
-        if (count($words) <= 4 && count($words) > 1)
+        if (count($words) <= 3 && count($words) > 1)
           $words[] = $phrase;
 
         $oneWordOnly = (count($words) == 1) ? true : false;
@@ -50,8 +50,10 @@ class ApiController extends Controller
 
                 if (count_words($word->name) > 1 || $oneWordOnly) {
                     $videos = WordVideo::getByWordAsync($word->id);
+                    $isNoun = false;
                 } else {
                     $videos = [];
+                    $isNoun = true;
                 }
 
                 $isNoun = $word->is_noun;
@@ -64,10 +66,12 @@ class ApiController extends Controller
 
                 if (count_words($word->name) > 1 || $oneWordOnly) {
                     $videos = WordVideo::getByWord($word->id);
+                    $isNoun = false;
                 } else {
                     $videos = [];
+                    $isNoun = true;
+
                 }
-                $isNoun = 1;
             }
 
 
