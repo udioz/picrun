@@ -39,7 +39,7 @@ class SaveWordImage implements ShouldQueue
           $event->wordImage->delete();
 
         } catch (\Exception $e) {
-            //
+            Log::info($e->getMessage() , ['id' => $event->wordImage->id]);
         }
     }
 
