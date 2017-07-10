@@ -63,6 +63,7 @@ class ApiController extends Controller
                 $isNew = false;
             }
 
+            //dump($word->name);
             switch ($word->phraseWordsCount) {
                 case 1:
                     $getImages = true;
@@ -86,7 +87,7 @@ class ApiController extends Controller
                     break;
             }
 
-            //dd($getImages,$getVideos,$isNew);
+            //dump($getImages,$getVideos,$isNew);
 
             if ($getImages) {
                 if ($isNew) {

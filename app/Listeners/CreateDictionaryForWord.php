@@ -27,11 +27,8 @@ class CreateDictionaryForWord
           $dictionary = Dictionary::where('word',$event->word->name)->first();
 
           if (!$dictionary) {
-              $langs = detect_language->detect($event->word->name)
-                        ->close();
-              dump($langs);
+              $langs = detect_language($event->word->name);
               $lang = isset(array_keys($langs)[0]) ? array_keys($langs)[0] : 'en';
-              dump($lang);
 
               if ($lang != 'en') {
                   $response = $this->yandexService
