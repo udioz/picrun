@@ -109,13 +109,13 @@ class ApiController extends Controller
               $videos=[];
             }
 
-            $isJsonNounString = $isJsonNoun ? 'true' : 'false';
+            //$isJsonNounString = $isJsonNoun ? 'true' : 'false';
 
             if (($getImages && count($images) > 0) || ($getVideos && count($videos) > 0)) {
               $response[] = [
                   'en' => $phrasePart,
                   'original' => $phrasePart,
-                  'is_noun' => $isJsonNounString,
+                  'is_noun' => $isJsonNoun,
                   'images' => $images,
                   'videos' => $videos
               ];
