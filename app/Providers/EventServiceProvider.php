@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
       'App\Events\WordCreated' => [
-        'App\Listeners\CreateMediaForWord',
         'App\Listeners\CreateDictionaryForWord',
+        'App\Listeners\CreateMediaForWord',
       ],
       'App\Events\WordImageCreated' => [
         'App\Listeners\SaveWordImage',

@@ -14,4 +14,7 @@ final class Word extends Model
       "created" => WordCreated::class
     ];
 
+    public $phraseWordsCount;
+    public $isPhrase = false;
+
 }

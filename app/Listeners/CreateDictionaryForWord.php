@@ -7,37 +7,31 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Models\Dictionary;
-use LanguageDetection\Language;
 
 class CreateDictionaryForWord
 {
     protected $languageDetector;
     protected $yandexService;
 
-    public function __construct(Language $ld)
+    public function __construct()
     {
-        $this->languageDetector = $ld;
         $this->yandexService = app('App\Picrun\Yandex\YandexService');
-
     }
 
 
     public function handle(WordCreated $event)
     {
-        $wholePhrase = false;
-        if (count_words($event->word->name) > 1){
-            $isNoun = 1;
-            $wholePhrase = true;
-        }
-
-        if (!$wholePhrase) {
+        // Go to yandex only for words (not phrases) and when the input is 3 words and above.
+        if (!$event->word->isPhrase && $event->word->phraseWordsCount >= 3) {
 
           $dictionary = Dictionary::where('word',$event->word->name)->first();
 
           if (!$dictionary) {
-              $langs = $this->languageDetector->detect($event->word->name)
+              $langs = detect_language->detect($event->word->name)
                         ->close();
+              dump($langs);
               $lang = isset(array_keys($langs)[0]) ? array_keys($langs)[0] : 'en';
+              dump($lang);
 
               if ($lang != 'en') {
                   $response = $this->yandexService
@@ -53,10 +47,12 @@ class CreateDictionaryForWord
 
               $response = json_decode($response);
 
-              if (is_object($response))
+              if (is_object($response)) {
                   $isNoun = isset($response->def[0]->pos) ? $response->def[0]->pos : false;
-              else
+                  dump($response);
+              } else {
                   $isNoun = false;
+              }
 
               $dictionary = new Dictionary;
               $dictionary->word = $event->word->name;
@@ -65,11 +61,8 @@ class CreateDictionaryForWord
               $dictionary->save();
 
           }
-          $isNoun = $dictionary->is_noun;
-
+          $event->word->is_noun = $dictionary->is_noun;
+          $event->word->save();
         }
-
-        $event->word->is_noun = $isNoun;
-        $event->word->save();
-    }
+    } // end function handle
 }

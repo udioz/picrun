@@ -29,11 +29,15 @@ class ApiController extends Controller
         $phrase = preg_replace('/[^\w\s]+/u','' , $phrase);
 
         $words = explode(" ",$phrase);
+        $wordsCount = count($words);
 
-        if (count($words) <= 3 && count($words) > 1)
-          $words[] = $phrase;
+        if ($wordsCount > 1)
+            $words[] = $phrase;
 
-        $oneWordOnly = (count($words) == 1) ? true : false;
+          // if ($wordsCount >= 3){
+          //     $lang = detect_language($phrase);
+          //     dd($lang);
+          // }
 
         foreach($words as $phrasePart)
         {
@@ -44,52 +48,84 @@ class ApiController extends Controller
                 $word = new Word;
                 $word->name = $phrasePart;
                 $word->usage_counter = 1;
+                $word->phraseWordsCount = $wordsCount;
+                if (count_words($phrasePart) > 1)
+                  $word->isPhrase = true;
                 $word->save();
-
-                $images = WordImage::getByWordAsync($word->id);
-
-                if (count_words($word->name) > 1 || $oneWordOnly) {
-                    $videos = WordVideo::getByWordAsync($word->id);
-                    $isNoun = false;
-                } else {
-                    $videos = [];
-                    $isNoun = true;
-                }
-
-                $isNoun = $word->is_noun;
+                $isNew = true;
             } else {
                 // Word already exist in DB
                 $word->usage_counter++;
                 $word->save();
-
-                $images = WordImage::getByWord($word->id);
-
-                if (count_words($word->name) > 1 || $oneWordOnly) {
-                    $videos = WordVideo::getByWord($word->id);
-                    $isNoun = false;
-                } else {
-                    $videos = [];
-                    $isNoun = true;
-
-                }
+                $word->phraseWordsCount = $wordsCount;
+                if (count_words($phrasePart) > 1)
+                  $word->isPhrase = true;
+                $isNew = false;
             }
 
+            switch ($word->phraseWordsCount) {
+                case 1:
+                    $getImages = true;
+                    $getVideos = true;
+                    $isJsonNoun = false;
+                    break;
+                case 2:
+                    $getImages = true;
+                    $getVideos = $word->isPhrase;
+                    $isJsonNoun = !$word->isPhrase;
+                    break;
+                case 3:
+                    $getImages = $word->is_noun || $word->isPhrase;
+                    $getVideos = $word->isPhrase;
+                    $isJsonNoun = !$word->isPhrase;
+                    break;
+                default: // 4 and above
+                    $getImages = $word->is_noun && !$word->isPhrase;
+                    $getVideos = $word->isPhrase;
+                    $isJsonNoun = !$word->isPhrase;
+                    break;
+            }
 
-            $response[] = [
-                'en' => $phrasePart,
-                'original' => $phrasePart,
-                'is_noun' => $isNoun,
-                'images' => $images,
-                'videos' => $videos
-            ];
+            //dd($getImages,$getVideos,$isNew);
 
+            if ($getImages) {
+                if ($isNew) {
+                  $images = WordImage::getByWordAsync($word->id);
+                } else {
+                  $images = WordImage::getByWord($word->id);
+                }
+            } else {
+              $images = [];
+            }
+
+            if ($getVideos) {
+                if ($isNew) {
+                  $videos = WordVideo::getByWordAsync($word->id);
+                } else {
+                  $videos = WordVideo::getByWord($word->id);
+                }
+            } else {
+              $videos=[];
+            }
+
+            if (($getImages && count($images) > 0) || ($getVideos && count($videos) > 0)) {
+              $response[] = [
+                  'en' => $phrasePart,
+                  'original' => $phrasePart,
+                  'is_noun' => $isJsonNoun,
+                  'images' => $images,
+                  'videos' => $videos
+              ];
+            }
 
         }
-
-        $response = ['response' => $response];
-
+        if (isset($response))
+          $response = ['response' => $response];
+        else
+          $response = ['error' => 'no response found'];
         // Use this line to return json without extra slashes.
-         return json_encode($response,JSON_UNESCAPED_SLASHES);
+        //dump($response);
+        return json_encode($response,JSON_UNESCAPED_SLASHES);
 
         //return $response;
 

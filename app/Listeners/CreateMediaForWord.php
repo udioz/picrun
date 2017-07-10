@@ -9,8 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Jobs\GoogleImagesJob;
 use App\Jobs\GoogleVideosJob;
 
-// use App\Models\WordImage;
-// use App\Models\WordVideo;
+use Illuminate\Support\Facades\Log;
 
 class CreateMediaForWord
 {
@@ -27,57 +26,52 @@ class CreateMediaForWord
 
     public function handle(WordCreated $event)
     {
-        for ($i=1 ; $i <= 4 ; $i++) {
-            $job = new GoogleImagesJob($event->word,$i);
-            $job->onQueue('google_curls');
-            dispatch($job);
+        switch ($event->word->phraseWordsCount) {
+            case 1:
+                $getImages = true;
+                $getVideos = true;
+                break;
+            case 2:
+                $getImages = true;
+                $getVideos = true; //$event->word->isPhrase;
+                break;
+            case 3:
+                $getImages = true; //$event->word->is_noun || $event->word->isPhrase;
+                $getVideos = true; //$event->word->isPhrase;
+                break;
+            default: // 4 and above
+                $getImages = !$event->word->isPhrase; //$event->word->is_noun && !$event->word->isPhrase;
+                $getVideos = true; //$event->word->isPhrase;
+                break;
         }
 
-        for ($i=1 ; $i <= 2 ; $i++) {
-          $job = new GoogleImagesJob($event->word,$i,'gifs');//->onQueue('google_curls');
-          $job->onQueue('google_curls');
-          dispatch($job);
+        if ($getImages) {
+            for ($i=1 ; $i <= 4 ; $i++) {
+                $job = new GoogleImagesJob($event->word,$i);
+                $job->onQueue('google_curls');
+                dispatch($job);
+            }
+
+            for ($i=1 ; $i <= 2 ; $i++) {
+              $job = new GoogleImagesJob($event->word,$i,'gifs');//->onQueue('google_curls');
+              $job->onQueue('google_curls');
+              dispatch($job);
+            }
+
+            for ($i=1 ; $i <= 2 ; $i++) {
+              $job = new GoogleImagesJob($event->word,$i,'stickers');//->onQueue('google_curls');
+              $job->onQueue('google_curls');
+              dispatch($job);
+            }
         }
 
-        for ($i=1 ; $i <= 2 ; $i++) {
-          $job = new GoogleImagesJob($event->word,$i,'stickers');//->onQueue('google_curls');
-          $job->onQueue('google_curls');
-          dispatch($job);
+        if ($getVideos) {
+            for ($i=1 ; $i <= 3 ; $i++) {
+              $job = new GoogleVideosJob($event->word,$i);
+              $job->onQueue('google_curls');
+              dispatch($job);
+            }
         }
 
-        for ($i=1 ; $i <= 3 ; $i++) {
-          $job = new GoogleVideosJob($event->word,$i);
-          $job->onQueue('google_curls');
-          dispatch($job);
-        }
-
-        /*
-        $googleService = app('App\Picrun\Google\GoogleService');
-        $media = $googleService->getMedia($event->word->name);
-        $allWordImages = array_merge($media['images'],$media['gifs'],$media['stickers']);
-
-        foreach ($allWordImages as $item)
-        {
-            $wordImage = new WordImage;
-            $wordImage->word_id = $event->word->id;
-            $wordImage->url = $item->link;
-            $wordImage->image_file_size = $item->image->byteSize;
-            $wordImage->image_content_type = $item->mime;
-            $wordImage->image_file_name = basename($item->link);
-            $wordImage->image_updated_at = date('Ymdhis');
-            $wordImage->save();
-        }
-
-        foreach ($media['videos'] as $item)
-        {
-            $wordVideo = new WordVideo;
-            $wordVideo->word_id = $event->word->id;
-            $wordVideo->title = $item->title;
-            $wordVideo->preview_url = $item->pagemap->cse_thumbnail[0]->src;
-            $wordVideo->url = $item->link;
-            $wordVideo->save();
-        }
-        */
-
-    }
+    } // end function handle
 }

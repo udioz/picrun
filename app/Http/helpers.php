@@ -1,4 +1,12 @@
 <?php
+use LanguageDetection\Language;
+
+function detect_language($phrase) {
+  $ld = new Language;
+  $langs = $ld->detect($phrase)->close();
+  $lang = isset(array_keys($langs)[0]) ? array_keys($langs)[0] : 'en';
+  return $lang;
+}
 
 function imageSuffix($mime) {
     $suffix = explode("/",$mime);
