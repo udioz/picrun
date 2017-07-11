@@ -7,6 +7,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Models\Dictionary;
+use Curl;
+
 
 class CreateDictionaryForWord
 {
@@ -27,8 +29,8 @@ class CreateDictionaryForWord
           $dictionary = Dictionary::where('word',$event->word->name)->first();
 
           if (!$dictionary) {
-              $langs = detect_language($event->word->name);
-              $lang = isset(array_keys($langs)[0]) ? array_keys($langs)[0] : 'en';
+              $lang = detect_language($event->word->name);
+
               // $data = [
               //   'q' => $event->word->name,
               //   'key' => config('picrun.googleapis_key'),
@@ -41,6 +43,11 @@ class CreateDictionaryForWord
               //     ->get();
               //
               // dd($response);
+              // if (isset($response->data->translations[0])) {
+              //     $englishTranslatedWord = $response->data->translations[0]->translatedText;
+              //     $lang = $response->data->translations[0]->detectedSourceLanguage;
+              //     if ($lang='iw') $lang = 'he';
+              // }
 
               if ($lang != 'en') {
                   $response = $this->yandexService
@@ -58,7 +65,6 @@ class CreateDictionaryForWord
 
               if (is_object($response)) {
                   $isNoun = isset($response->def[0]->pos) ? $response->def[0]->pos : false;
-                  dump($response);
               } else {
                   $isNoun = false;
               }

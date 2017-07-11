@@ -41,9 +41,10 @@ $app->get('/', function () use ($app) {
   return $response;
 });
 
-$app->get('/translate', function () use ($app) {
+$app->get('/translate/{phrase}', function ($phrase) use ($app) {
+    
     $data = [
-      'q' => 'פיל לבן',
+      'q' => urldecode($phrase),
       'key' => config('picrun.googleapis_key'),
       'target' => 'en',
       'format' => 'text',
@@ -56,9 +57,10 @@ $app->get('/translate', function () use ($app) {
 
     $response = json_decode($response);
 
-    if (isset($response->data->translations)) {
-        dump($response->data->translations['translatedText']);
+    if (isset($response->data->translations[0])) {
+        dump($response->data->translations[0]->translatedText);
+        dump($response->data->translations[0]->detectedSourceLanguage);
     }
-
+    dd($response);
     return $response;
 });

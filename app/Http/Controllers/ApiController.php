@@ -58,7 +58,6 @@ class ApiController extends Controller
                 $isNew = false;
             }
 
-            //dump($word->name);
             switch ($word->phraseWordsCount) {
                 case 1:
                     $getImages = true;
@@ -82,8 +81,6 @@ class ApiController extends Controller
                     break;
             }
 
-            //dump($getImages,$getVideos,$isNew);
-
             if ($getImages) {
                 if ($isNew) {
                   $images = WordImage::getByWordAsync($word->id);
@@ -104,8 +101,6 @@ class ApiController extends Controller
               $videos=[];
             }
 
-            //$isJsonNounString = $isJsonNoun ? 'true' : 'false';
-
             if (($getImages && count($images) > 0) || ($getVideos && count($videos) > 0)) {
               $response[] = [
                   'en' => $phrasePart,
@@ -115,6 +110,7 @@ class ApiController extends Controller
                   'videos' => $videos
               ];
             }
+            //dd($response);
 
         }
         if (isset($response))
@@ -122,7 +118,7 @@ class ApiController extends Controller
         else
           $response = ['error' => 'no response found'];
         // Use this line to return json without extra slashes.
-        //dump($response);
+        //dd($response);
         return json_encode($response,JSON_UNESCAPED_SLASHES);
 
         //return $response;
