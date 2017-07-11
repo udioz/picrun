@@ -13,7 +13,7 @@ final class WordVideo extends Model
         $counter=1;
         $rawVideos = [];
 
-        while (count($rawVideos) <= 10 && $counter < 100) {
+        while (count($rawVideos) <= 10 && $counter < 20) {
           $counter++;
           $rawVideos = static::where('word_id',$wordId)->get();
           if (count($rawVideos) <= 10) usleep(100000);

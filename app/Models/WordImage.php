@@ -20,7 +20,7 @@ final class WordImage extends Model
         $counter=1;
         $rawImages = [];
 
-        while (count($rawImages) <= 10 && $counter < 100) {
+        while (count($rawImages) <= 10 && $counter < 20) {
           $counter++;
           $rawImages = static::where('word_id',$wordId)->get();
           if (count($rawImages) <= 10) usleep(100000);
