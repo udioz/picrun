@@ -17,9 +17,14 @@ final class WordImage extends Model
     ];
 
     public static function getByWordAsync($wordId){
-        do {
+        $counter=1;
+        $rawImages = [];
+
+        while (count($rawImages) <= 10 && $counter < 10) {
+          $counter++;
           $rawImages = static::where('word_id',$wordId)->get();
-        } while (count($rawImages) <= 12);
+          if (count($rawImages) <= 10) usleep(100000);
+        }
 
         return static::normalize($rawImages);
     }

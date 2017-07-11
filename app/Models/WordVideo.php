@@ -10,9 +10,14 @@ final class WordVideo extends Model
 {
     public static function getByWordAsync($wordId)
     {
-        do {
+        $counter=1;
+        $rawVideos = [];
+
+        while (count($rawVideos) <= 10 && $counter < 10) {
+          $counter++;
           $rawVideos = static::where('word_id',$wordId)->get();
-        } while (count($rawVideos) <= 10);
+          if (count($rawVideos) <= 10) usleep(100000);
+        }
 
         return static::normalize($rawVideos);
     }
