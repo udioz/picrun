@@ -29,18 +29,6 @@ class CreateDictionaryForWord
           if (!$dictionary) {
               $langs = detect_language($event->word->name);
               $lang = isset(array_keys($langs)[0]) ? array_keys($langs)[0] : 'en';
-              // $data = [
-              //   'q' => $event->word->name,
-              //   'key' => config('picrun.googleapis_key'),
-              //   'target' => 'en',
-              //   'format' => 'text',
-              // ];
-              //
-              // $response = Curl::to(config('picrun.google_translate_api_url'))
-              //     ->withData($data)
-              //     ->get();
-              //
-              // dd($response);
 
               if ($lang != 'en') {
                   $response = $this->yandexService

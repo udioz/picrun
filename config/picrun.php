@@ -6,6 +6,7 @@ return [
   'googleapis_url' => env('GOOGLEAPIS_URL'),
   'google_images_cx' => env('GOOGLE_IMAGES_CX'),
   'google_videos_cx' => env('GOOGLE_VIDEOS_CX'),
+  'google_translate_api_url' => env('GOOGLE_TRANSLATE_API_URL'),
 
   'google_images_required' => 20,
   'google_gifs_required' => 10,
@@ -22,6 +23,9 @@ return [
   'max_image_size'  => env('MAX_IMAGE_SIZE'),
 
   'aws_path'  => 'http://' . env('AWS_BUCKET') . env('AWS_URL'),
+
+  'giphy_api_url' => env('GIPHY_API_URL'),
+  'giphy_api_key' => env('GIPHY_API_KEY'),
 
 
 ];

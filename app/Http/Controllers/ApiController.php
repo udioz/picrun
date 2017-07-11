@@ -34,11 +34,6 @@ class ApiController extends Controller
         if ($wordsCount > 1)
             $words[] = $phrase;
 
-          // if ($wordsCount >= 3){
-          //     $lang = detect_language($phrase);
-          //     dd($lang);
-          // }
-
         foreach($words as $phrasePart)
         {
             $word = Word::where('name',$phrasePart)->first();
@@ -76,12 +71,12 @@ class ApiController extends Controller
                     $isJsonNoun = !$word->isPhrase;
                     break;
                 case 3:
-                    $getImages = $word->is_noun || $word->isPhrase;
+                    $getImages = ($word->is_noun || $word->isPhrase) || !$isNew;
                     $getVideos = $word->isPhrase;
                     $isJsonNoun = !$word->isPhrase;
                     break;
                 default: // 4 and above
-                    $getImages = $word->is_noun && !$word->isPhrase;
+                    $getImages = ($word->is_noun && !$word->isPhrase) || !$isNew;
                     $getVideos = $word->isPhrase;
                     $isJsonNoun = !$word->isPhrase;
                     break;

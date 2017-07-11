@@ -21,22 +21,44 @@ $app->get('/admin/wordImages/{phrase}', function ($phrase) use ($app) {
 });
 
 $app->get('/', function () use ($app) {
-  $img = file_get_contents('https://i.ytimg.com/vi/iXAbte4QXKs/maxresdefault.jpg');
-  Storage::disk('local')->put('file.jpg',$img);
-//  dd();
-  while (Storage::disk('local')->size('file.jpg') > 150000){
-      $img = Image::make(Storage::disk('local')->get('file.jpg'));
-      $img->stream('jpg',80);
-      Storage::disk('local')->put('file.jpg',$img);
+  $data = [
+    'q' => 'lenny kravitz',
+    'api_key' => config('picrun.giphy_api_key'),
+  ];
+
+  $response = Curl::to(config('picrun.giphy_api_url'))
+      ->withData($data)
+      ->get();
+
+  $response = json_decode($response);
+  if (isset($response->data)) {
+      foreach ($response->data as $gif) {
+          dump($gif->images->downsized_small->mp4);
+      }
   }
 
-  // $img = Image::make(Storage::disk('local')->get('file.jpg'));
-  // $img->stream('jpg',100);
-  // Storage::disk('local')->put('file2.jpg',$img);
+    dd($response);
+  return $response;
+});
 
-  // $img = Image::make('http://img.mako.co.il/2016/08/23/eyalgolan_i.jpg')
-  //           ->stream('jpg'); // <-- Key point
-  //$img = Image::make(Storage::disk('local')->get('file.jpg'));
-  //dd(get_class($img));
+$app->get('/translate', function () use ($app) {
+    $data = [
+      'q' => 'פיל לבן',
+      'key' => config('picrun.googleapis_key'),
+      'target' => 'en',
+      'format' => 'text',
 
+    ];
+
+    $response = Curl::to(config('picrun.google_translate_api_url'))
+        ->withData($data)
+        ->get();
+
+    $response = json_decode($response);
+
+    if (isset($response->data->translations)) {
+        dump($response->data->translations['translatedText']);
+    }
+
+    return $response;
 });
