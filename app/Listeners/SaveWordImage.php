@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Log;
 
 class SaveWordImage implements ShouldQueue
 {
+    public $tries = 3;
+    public $timeout = 20;
+
+
     public function __construct()
     {
         //

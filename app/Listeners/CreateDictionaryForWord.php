@@ -29,44 +29,48 @@ class CreateDictionaryForWord
           $dictionary = Dictionary::where('word',$event->word->name)->first();
 
           if (!$dictionary) {
-              $lang = detect_language($event->word->name);
+              //$lang = detect_language($event->word->name);
 
-              // $data = [
-              //   'q' => $event->word->name,
-              //   'key' => config('picrun.googleapis_key'),
-              //   'target' => 'en',
-              //   'format' => 'text',
-              // ];
-              //
-              // $response = Curl::to(config('picrun.google_translate_api_url'))
-              //     ->withData($data)
-              //     ->get();
-              //
-              // dd($response);
-              // if (isset($response->data->translations[0])) {
-              //     $englishTranslatedWord = $response->data->translations[0]->translatedText;
-              //     $lang = $response->data->translations[0]->detectedSourceLanguage;
-              //     if ($lang='iw') $lang = 'he';
-              // }
+              $data = [
+                'q' => $event->word->name,
+                'key' => config('picrun.googleapis_key'),
+                'target' => 'en',
+                'format' => 'text',
+              ];
 
-              if ($lang != 'en') {
-                  $response = $this->yandexService
-                      ->translate($event->word->name,$lang.'-en');
+              $response = Curl::to(config('picrun.google_translate_api_url'))
+                  ->withData($data)
+                  ->get();
 
-                  $response = json_decode($response);
-                  $englishTranslatedWord = isset($response->text[0]) ? $response->text[0] : 'never';
+              $response = json_decode($response);
+
+              if (isset($response->data->translations[0])) {
+                  $englishTranslatedWord = $response->data->translations[0]->translatedText;
+                  $lang = $response->data->translations[0]->detectedSourceLanguage;
+                  if ($lang='iw') $lang = 'he';
               } else {
-                  $englishTranslatedWord = $event->word->name;
+                $lang = 'en';
+                $englishTranslatedWord = $event->word->name;
               }
+
+              // if ($lang != 'en') {
+              //     $response = $this->yandexService
+              //         ->translate($event->word->name,$lang.'-en');
+              //
+              //     $response = json_decode($response);
+              //     $englishTranslatedWord = isset($response->text[0]) ? $response->text[0] : 'never';
+              // } else {
+              //     $englishTranslatedWord = $event->word->name;
+              // }
 
               $response = $this->yandexService->dictionary($englishTranslatedWord);
 
               $response = json_decode($response);
 
               if (is_object($response)) {
-                  $isNoun = isset($response->def[0]->pos) ? $response->def[0]->pos : false;
+                  $isNoun = isset($response->def[0]->pos) ? $response->def[0]->pos : true;
               } else {
-                  $isNoun = false;
+                  $isNoun = true;
               }
 
               $dictionary = new Dictionary;

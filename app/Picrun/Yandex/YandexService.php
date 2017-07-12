@@ -35,15 +35,17 @@ class YandexService
 
     function dictionary($phrase,$fromToLanguage = 'en-en')
     {
+        $data = [
+          'key' => $this->apiDictionaryKey,
+          'text' => $phrase,
+          'lang' => $fromToLanguage,
+        ];
+
         $response = Curl::to($this->apiDictionaryUrl)
-          ->withData([
-            'key' => $this->apiDictionaryKey,
-            'text' => $phrase,
-            'lang' => $fromToLanguage,
-          ])
+          ->withData($data)
           ->get();
 
-          return $response;
+        return $response;
 
     }
 

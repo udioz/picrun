@@ -42,7 +42,7 @@ $app->get('/', function () use ($app) {
 });
 
 $app->get('/translate/{phrase}', function ($phrase) use ($app) {
-    
+
     $data = [
       'q' => urldecode($phrase),
       'key' => config('picrun.googleapis_key'),
@@ -63,4 +63,36 @@ $app->get('/translate/{phrase}', function ($phrase) use ($app) {
     }
     dd($response);
     return $response;
+});
+
+$app->get('/videos/{phrase}', function ($phrase) use ($app) {
+    $phrase = trim(urldecode($phrase));
+
+    $data = [
+      'q' => $phrase,
+      'cx' => config('picrun.google_videos_cx'),
+      'key' => config('picrun.googleapis_key'),
+      'fields' => 'items(title,link,pagemap/cse_thumbnail/src)',
+      'num' => 10,
+      'start' => 1
+    ];
+
+    $response = Curl::to(config('picrun.googleapis_url'))
+        ->withData($data)
+        ->get();
+
+    return $response;
+});
+
+$app->get('/natural/{phrase}', function ($phrase) use ($app) {
+    $data = [
+      'q' => $phrase,
+      'cx' => config('picrun.google_videos_cx'),
+      'key' => config('picrun.googleapis_key'),
+      'fields' => 'items(title,link,pagemap/cse_thumbnail/src)',
+      'num' => 10,
+      'start' => 1
+    ];
+
+    //https://language.googleapis.com/v1beta2/documents:analyzeSyntax
 });
