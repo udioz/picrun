@@ -41,7 +41,12 @@ final class WordImage extends Model
         $images = array();
 
         foreach ($rawImages as $image) {
-          $url = isset($image->s3_path) ? config('picrun.aws_path') . $image->s3_path : $image->url;
+          if (isset($image->s3_path)){
+            $url = config('picrun.aws_path') . $image->s3_path;
+          } else {
+            $url = $image->url;
+            event(new WordImageCreated($image));
+          }
 
           $images[] = [
             'url' => $url
