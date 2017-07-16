@@ -22,7 +22,7 @@ class ApiController extends Controller
         //
     }
 
-    public function search ($phrase)
+    public function search ($phrase,$deviceOS)
     {
         // Clean phrase
         $phrase = urldecode($phrase);

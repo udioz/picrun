@@ -5,7 +5,7 @@
 
 
 $app->group(['prefix' => 'api/v1'],function ($app) {
-    $app->get('search/{phrase}','ApiController@search');
+    $app->get('search/{phrase}/device_os/{deviceOS}','ApiController@search');
     $app->post('removeImage/','ApiController@removeImage');
 });
 
@@ -82,17 +82,4 @@ $app->get('/videos/{phrase}', function ($phrase) use ($app) {
         ->get();
 
     return $response;
-});
-
-$app->get('/natural/{phrase}', function ($phrase) use ($app) {
-    $data = [
-      'q' => $phrase,
-      'cx' => config('picrun.google_videos_cx'),
-      'key' => config('picrun.googleapis_key'),
-      'fields' => 'items(title,link,pagemap/cse_thumbnail/src)',
-      'num' => 10,
-      'start' => 1
-    ];
-
-    //https://language.googleapis.com/v1beta2/documents:analyzeSyntax
 });
