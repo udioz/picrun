@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5abe57d49be7ee5e0c163f727cf570db",
+    "content-hash": "3aa7971aea570248660f54ae3d2d0899",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1814,6 +1814,52 @@
                 "lumen"
             ],
             "time": "2017-04-03T21:20:22+00:00"
+        },
+        {
+            "name": "laravelista/lumen-vendor-publish",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravelista/lumen-vendor-publish.git",
+                "reference": "51af71ad84007ae94fdf80b4aaf78fd981a62289"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravelista/lumen-vendor-publish/zipball/51af71ad84007ae94fdf80b4aaf78fd981a62289",
+                "reference": "51af71ad84007ae94fdf80b4aaf78fd981a62289",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^5.0",
+                "illuminate/filesystem": "^5.0",
+                "illuminate/support": "^5.0",
+                "league/flysystem": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laravelista\\LumenVendorPublish\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mario Basic",
+                    "email": "mario.basic@outlook.com"
+                }
+            ],
+            "description": "vendor:publish for Lumen framework.",
+            "keywords": [
+                "command",
+                "console",
+                "lumen",
+                "publish",
+                "vendor"
+            ],
+            "time": "2016-09-25T10:55:42+00:00"
         },
         {
             "name": "league/flysystem",

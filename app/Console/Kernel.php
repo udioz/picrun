@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
       Commands\BuildEnglishDictionary::class,
       Commands\TranslateDictionary::class,
       Commands\CompleteWordImages::class,
-      Commands\Test::class
+      Commands\Test::class,
+      \Laravelista\LumenVendorPublish\VendorPublishCommand::class
     ];
 
     /**

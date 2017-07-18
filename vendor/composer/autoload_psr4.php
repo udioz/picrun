@@ -32,6 +32,7 @@ return array(
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'League\\Flysystem\\AwsS3v3\\' => array($vendorDir . '/league/flysystem-aws-s3-v3/src'),
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
+    'Laravelista\\LumenVendorPublish\\' => array($vendorDir . '/laravelista/lumen-vendor-publish/src'),
     'Laravel\\Lumen\\' => array($vendorDir . '/laravel/lumen-framework/src'),
     'LanguageDetection\\' => array($vendorDir . '/patrickschur/language-detection/src/LanguageDetection'),
     'JmesPath\\' => array($vendorDir . '/mtdowling/jmespath.php/src'),

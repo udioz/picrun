@@ -74,6 +74,7 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         array (
             'League\\Flysystem\\AwsS3v3\\' => 25,
             'League\\Flysystem\\' => 17,
+            'Laravelista\\LumenVendorPublish\\' => 31,
             'Laravel\\Lumen\\' => 14,
             'LanguageDetection\\' => 18,
         ),
@@ -243,6 +244,10 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
+        ),
+        'Laravelista\\LumenVendorPublish\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravelista/lumen-vendor-publish/src',
         ),
         'Laravel\\Lumen\\' => 
         array (
@@ -440,7 +445,6 @@ class ComposerStaticInit99eaff24bd315f2d6573f1aedb4ad341
 
     public static $classMap = array (
         'AddS3ToWordImages' => __DIR__ . '/../..' . '/database/migrations/2017_06_29_185718_add_s3_to_word_images.php',
-        'AddWordImagesUniqueIndexWordidurl' => __DIR__ . '/../..' . '/database/migrations/2017_07_07_054849_add_word_images_unique_index_wordidurl.php',
         'CreateDictionaryTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_16_060554_create_dictionary_table.php',
         'CreateFailedJobsTable' => __DIR__ . '/../..' . '/database/migrations/2017_07_07_120649_create_failed_jobs_table.php',
         'CreateJobsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_30_042049_create_jobs_table.php',

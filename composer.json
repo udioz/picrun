@@ -15,7 +15,8 @@
         "intervention/imagecache": "^2.3",
         "league/flysystem": "^1.0",
         "league/flysystem-aws-s3-v3": "~1.0",
-        "watson/rememberable": "^2.0"
+        "watson/rememberable": "^2.0",
+        "laravelista/lumen-vendor-publish": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

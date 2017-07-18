@@ -1,7 +1,6 @@
 <?php
 
-//use Intervention\Image\Facades\Image;
-//use Image;
+use Illuminate\Http\File;
 
 
 $app->group(['prefix' => 'api/v1'],function ($app) {
@@ -21,24 +20,9 @@ $app->get('/admin/wordImages/{phrase}', function ($phrase) use ($app) {
 });
 
 $app->get('/', function () use ($app) {
-  $data = [
-    'q' => 'lenny kravitz',
-    'api_key' => config('picrun.giphy_api_key'),
-  ];
-
-  $response = Curl::to(config('picrun.giphy_api_url'))
-      ->withData($data)
-      ->get();
-
-  $response = json_decode($response);
-  if (isset($response->data)) {
-      foreach ($response->data as $gif) {
-          dump($gif->images->downsized_small->mp4);
-      }
-  }
-
-    dd($response);
-  return $response;
+    $url = 'https://media2.giphy.com/media/hpnvqznpFPFlK/giphy-downsized-small.mp4';
+    //Storage::disk('local')->put()
+    Storage::put('2017/07/16/udi.mp4',file_get_contents($url),'public');
 });
 
 $app->get('/translate/{phrase}', function ($phrase) use ($app) {

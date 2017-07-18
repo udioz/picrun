@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Jobs\GoogleImagesJob;
 use App\Jobs\GoogleVideosJob;
+use App\Jobs\GiphyJob;
 
 use Illuminate\Support\Facades\Log;
 
@@ -52,11 +53,15 @@ class CreateMediaForWord
                 dispatch($job);
             }
 
-            for ($i=1 ; $i <= 2 ; $i++) {
-              $job = new GoogleImagesJob($event->word,$i,'gifs');//->onQueue('google_curls');
-              $job->onQueue('google_curls');
-              dispatch($job);
-            }
+            // for ($i=1 ; $i <= 2 ; $i++) {
+            //   $job = new GoogleImagesJob($event->word,$i,'gifs');//->onQueue('google_curls');
+            //   $job->onQueue('google_curls');
+            //   dispatch($job);
+            // }
+            $job = new GiphyJob($event->word);
+            $job->onQueue('google_curls');
+            dispatch($job);
+
 
             for ($i=1 ; $i <= 2 ; $i++) {
               $job = new GoogleImagesJob($event->word,$i,'stickers');//->onQueue('google_curls');

@@ -27,23 +27,32 @@ class SaveWordImage implements ShouldQueue
     {
         try {
           $suffix = imageSuffix($event->wordImage->image_content_type);
-
-          $img = Image::make($event->wordImage->url)
-                    ->stream($suffix); // <-- Key point
-
           $path = $event->wordImage->created_at->format('Y/m/d/') .
                  $event->wordImage->id . '.' . $suffix;
+          $isGif = ($event->wordImage->image_type == 'g');
 
-          Storage::put($path, (string) $img, 'public');
+          if (!$isGif) {
+
+              $img = Image::make($event->wordImage->url)
+                        ->stream($suffix); // <-- Key point
+              Storage::put($path, (string) $img, 'public');
+
+          } else { // isGif == true
+
+            Storage::put($path,file_get_contents($event->wordImage->url),'public');
+          }
+
           $event->wordImage->s3_path = $path;
           $event->wordImage->save();
           unset($img);
+
         } catch (\Intervention\Image\Exception\NotReadableException $e) {
+
           Log::info('Not Readable Exception caught. Deleting Image ' , ['id' => $event->wordImage->id]);
           $event->wordImage->delete();
 
         } catch (\Exception $e) {
-            Log::info($e->getMessage() , ['id' => $event->wordImage->id]);
+            Log::info('Exception!!! ' . $e->getMessage() , ['id' => $event->wordImage->id]);
         }
     }
 
