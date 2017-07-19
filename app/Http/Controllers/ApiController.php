@@ -138,7 +138,7 @@ class ApiController extends Controller
 
     public function adminSearch($phrase)
     {
-        $json = $this->search($phrase);
+        $json = $this->search($phrase,3);
         $data = json_decode($json,true);
         return view('admin.search',compact('data'));
     }
