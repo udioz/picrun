@@ -24,6 +24,8 @@ class ApiController extends Controller
 
     public function search ($phrase,$deviceOS)
     {
+        session_start();
+        $_SESSION['deviceOS'] = $deviceOS;
         // Clean phrase
         $phrase = urldecode($phrase);
         $phrase = preg_replace('/[^\w\s]+/u','' , $phrase);

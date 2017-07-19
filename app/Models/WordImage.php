@@ -22,7 +22,15 @@ final class WordImage extends Model
 
         while (count($rawImages) <= 10 && $counter < 20) {
           $counter++;
-          $rawImages = static::where('word_id',$wordId)->get();
+          if ($_SESSION['deviceOS'] == 1) { // iphone
+              $rawImages = static::where([
+                  ['word_id','=',$wordId],
+                  ['image_type','!=','g']
+                ])
+                ->get();
+          } else {
+              $rawImages = static::where('word_id',$wordId)->get();
+          }
           if (count($rawImages) <= 10) usleep(100000);
         }
 
@@ -31,7 +39,15 @@ final class WordImage extends Model
 
     public static function getByWord($wordId)
     {
-        $rawImages = static::where('word_id',$wordId)->get();
+        if ($_SESSION['deviceOS'] == 1) { // iphone
+            $rawImages = static::where([
+                ['word_id','=',$wordId],
+                ['image_type','!=','g']
+              ])
+              ->get();
+        } else {
+            $rawImages = static::where('word_id',$wordId)->get();
+        }
         //if (count($rawImages) < 30)
         return static::normalize($rawImages);
     }
