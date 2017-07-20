@@ -1,6 +1,14 @@
 <?php
 use LanguageDetection\Language;
 
+function phrase_sanitize($phrase) {
+  $phrase = urldecode($phrase);
+  $phrase = str_replace('.',' ',$phrase);
+  $phrase = preg_replace('/[^\w\s]+/u','' , $phrase);
+  $phrase = preg_replace('!\s+!', ' ', $phrase);
+  return $phrase;
+}
+
 function detect_language($phrase) {
   $ld = new Language;
   $langs = $ld->detect($phrase)->close();

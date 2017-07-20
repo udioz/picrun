@@ -27,8 +27,7 @@ class ApiController extends Controller
         session_start();
         $_SESSION['deviceOS'] = $deviceOS;
         // Clean phrase
-        $phrase = urldecode($phrase);
-        $phrase = preg_replace('/[^\w\s]+/u','' , $phrase);
+        $phrase = phrase_sanitize($phrase);
 
         $words = explode(" ",$phrase);
         $wordsCount = count($words);
