@@ -58,6 +58,7 @@ class CreateMediaForWord
             //   $job->onQueue('google_curls');
             //   dispatch($job);
             // }
+            
             $job = new GiphyJob($event->word);
             $job->onQueue('google_curls');
             dispatch($job);

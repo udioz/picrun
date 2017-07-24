@@ -7,6 +7,7 @@ return [
   'google_images_cx' => env('GOOGLE_IMAGES_CX'),
   'google_videos_cx' => env('GOOGLE_VIDEOS_CX'),
   'google_translate_api_url' => env('GOOGLE_TRANSLATE_API_URL'),
+  'google_detect_api_url' => env('GOOGLE_DETECT_API_URL'),
 
   'google_images_required' => 20,
   'google_gifs_required' => 10,
@@ -27,5 +28,6 @@ return [
   'giphy_api_url' => env('GIPHY_API_URL'),
   'giphy_api_key' => env('GIPHY_API_KEY'),
 
+  'supported_languages' => env('PICRUN_SUPPORTED_LANGUAGES'),
 
 ];

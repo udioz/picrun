@@ -26,56 +26,25 @@ class CreateDictionaryForWord
         // Go to yandex only for words (not phrases) and when the input is 3 words and above.
         if (!$event->word->isPhrase && $event->word->phraseWordsCount >= 3) {
 
-          $dictionary = Dictionary::where('word',$event->word->name)->first();
+          //$dictionary = Dictionary::where('word',$event->word->name)->first();
+          $dictionary = Dictionary::where([
+              ['word','=',$event->word->name],
+              ['language_code','=',$event->word->language]
+            ])->first();
 
-          if (!$dictionary) {
-              //$lang = detect_language($event->word->name);
 
-              $data = [
-                'q' => $event->word->name,
-                'key' => config('picrun.googleapis_key'),
-                'target' => 'en',
-                'format' => 'text',
-              ];
+          if ($dictionary->is_noun === null) {
 
-              $response = Curl::to(config('picrun.google_translate_api_url'))
-                  ->withData($data)
-                  ->get();
-
-              $response = json_decode($response);
-
-              if (isset($response->data->translations[0])) {
-                  $englishTranslatedWord = $response->data->translations[0]->translatedText;
-                  $lang = $response->data->translations[0]->detectedSourceLanguage;
-                  if ($lang='iw') $lang = 'he';
-              } else {
-                $lang = 'en';
-                $englishTranslatedWord = $event->word->name;
-              }
-
-              // if ($lang != 'en') {
-              //     $response = $this->yandexService
-              //         ->translate($event->word->name,$lang.'-en');
-              //
-              //     $response = json_decode($response);
-              //     $englishTranslatedWord = isset($response->text[0]) ? $response->text[0] : 'never';
-              // } else {
-              //     $englishTranslatedWord = $event->word->name;
-              // }
-
-              $response = $this->yandexService->dictionary($englishTranslatedWord);
+              $response = $this->yandexService->dictionary($event->word->englishTranslatedWord);
 
               $response = json_decode($response);
 
               if (is_object($response)) {
                   $isNoun = isset($response->def[0]->pos) ? $response->def[0]->pos : true;
               } else {
-                  $isNoun = true;
+                  $isNoun = 'noun';
               }
 
-              $dictionary = new Dictionary;
-              $dictionary->word = $event->word->name;
-              $dictionary->language_code = $lang;
               $dictionary->is_noun = ($isNoun == 'noun');
               $dictionary->save();
 

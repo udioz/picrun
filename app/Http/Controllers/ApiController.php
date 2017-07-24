@@ -25,9 +25,12 @@ class ApiController extends Controller
     public function search ($phrase,$deviceOS)
     {
         session_start();
+        if (isset($_SESSION['language'])) unset($_SESSION['language']);
         $_SESSION['deviceOS'] = $deviceOS;
-        // Clean phrase
+
+
         $phrase = phrase_sanitize($phrase);
+        $_SESSION['phrase'] = $phrase;
 
         $words = explode(" ",$phrase);
         $wordsCount = count($words);
@@ -104,7 +107,7 @@ class ApiController extends Controller
 
             if (($getImages && count($images) > 0) || ($getVideos && count($videos) > 0)) {
               $response[] = [
-                  'en' => $phrasePart,
+                  'en' => $word->englishTranslatedWord,
                   'original' => $phrasePart,
                   'is_noun' => $isJsonNoun,
                   'images' => $images,

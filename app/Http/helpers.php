@@ -9,6 +9,31 @@ function phrase_sanitize($phrase) {
   return $phrase;
 }
 
+function google_detect_language($phrase) {
+  $data = [
+    'q' => $phrase,
+    'key' => config('picrun.googleapis_key'),
+  ];
+
+  $response = Curl::to(config('picrun.google_detect_api_url'))
+      ->withData($data)
+      ->get();
+
+  $response = json_decode($response);
+
+  if (isset($response->data->detections[0][0])) {
+      $language = $response->data->detections[0][0]->language;
+      if ($language == 'iw') $language = 'he';
+  } else {
+      $language = 'unknown';
+  }
+
+  if (!str_contains(config('picrun.supported_languages'),$language))
+    $language = 'unknown';
+
+  return $language;
+}
+
 function detect_language($phrase) {
   $ld = new Language;
   $langs = $ld->detect($phrase)->close();

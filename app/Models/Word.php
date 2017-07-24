@@ -16,5 +16,7 @@ final class Word extends Model
 
     public $phraseWordsCount;
     public $isPhrase = false;
+    public $englishTranslatedWord;
+    public $language;
 
 }

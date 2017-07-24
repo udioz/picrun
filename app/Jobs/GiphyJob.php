@@ -13,10 +13,12 @@ class GiphyJob extends Job
     public $timeout =   10;
 
     protected $word;
+    protected $englishTranslatedWord;
 
     public function __construct($word)
     {
         $this->word = $word;
+        $this->englishTranslatedWord = $this->word->englishTranslatedWord;
     }
 
     /**
@@ -26,7 +28,9 @@ class GiphyJob extends Job
      */
     public function handle()
     {
-        $phrase = trim(urldecode($this->word->name));
+        $phrase = trim($this->englishTranslatedWord);
+
+        if (empty($phrase)) return;
 
         $data = [
           'q' => $phrase,

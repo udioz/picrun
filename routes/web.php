@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\File;
+use App\Models\Dictionary;
 
 
 $app->group(['prefix' => 'api/v1'],function ($app) {
@@ -30,9 +31,21 @@ $app->get('/translate/{phrase}', function ($phrase) use ($app) {
     $data = [
       'q' => urldecode($phrase),
       'key' => config('picrun.googleapis_key'),
+    ];
+
+    $response = Curl::to(config('picrun.google_detect_api_url'))
+        ->withData($data)
+        ->post();
+
+    $response = json_decode($response);
+
+    dd($response);
+
+    $data = [
+      'q' => urldecode($phrase),
+      'key' => config('picrun.googleapis_key'),
       'target' => 'en',
       'format' => 'text',
-
     ];
 
     $response = Curl::to(config('picrun.google_translate_api_url'))
