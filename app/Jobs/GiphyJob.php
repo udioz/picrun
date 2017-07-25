@@ -54,11 +54,17 @@ class GiphyJob extends Job
               $wordImage = new WordImage;
               $wordImage->word_id = $this->word->id;
               //$wordImage->url = $item->images->downsized_small->mp4;
-              $wordImage->url = $item->images->fixed_height_downsampled->webp;
+              //$wordImage->url = $item->images->fixed_height_downsampled->webp;
+              $wordImage->url = $item->images->fixed_width_downsampled->url;
+
               //$wordImage->image_file_size = $item->images->downsized_small->mp4_size;
-              $wordImage->image_file_size = $item->images->fixed_height_downsampled->webp_size;
+              //$wordImage->image_file_size = $item->images->fixed_height_downsampled->webp_size;
+              $wordImage->image_file_size = $item->images->fixed_width_downsampled->size;
+
               //$wordImage->image_content_type = 'video/mp4';
-              $wordImage->image_content_type = 'image/webp';
+              //$wordImage->image_content_type = 'image/webp';
+              $wordImage->image_content_type = 'image/gif';
+
               $wordImage->image_file_name = basename($wordImage->url);
               $wordImage->image_updated_at = date('Ymdhis');
               $wordImage->md5_duplicate_helper = md5($wordImage->word_id . $wordImage->url);
