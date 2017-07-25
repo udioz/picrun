@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Events\WordImageCreated;
 use Watson\Rememberable\Rememberable;
 
+use App\Events\WordCreated;
+
 final class WordImage extends Model
 {
     use Rememberable;
@@ -16,7 +18,7 @@ final class WordImage extends Model
       "created" => WordImageCreated::class
     ];
 
-    public static function getByWordAsync($wordId){
+    public static function getByWordAsync($word){
         $counter=1;
         $rawImages = [];
 
@@ -24,12 +26,12 @@ final class WordImage extends Model
           $counter++;
           if ($_SESSION['deviceOS'] == 1) { // iphone
               $rawImages = static::where([
-                  ['word_id','=',$wordId],
+                  ['word_id','=',$word->id],
                   ['image_type','!=','g']
                 ])
                 ->get();
           } else {
-              $rawImages = static::where('word_id',$wordId)->get();
+              $rawImages = static::where('word_id',$word->id)->get();
           }
           if (count($rawImages) <= 10) usleep(100000);
         }
@@ -37,18 +39,22 @@ final class WordImage extends Model
         return static::normalize($rawImages);
     }
 
-    public static function getByWord($wordId)
+    public static function getByWord($word,$counter = 0)
     {
         if ($_SESSION['deviceOS'] == 1) { // iphone
             $rawImages = static::where([
-                ['word_id','=',$wordId],
+                ['word_id','=',$word->id],
                 ['image_type','!=','g']
               ])
               ->get();
         } else {
-            $rawImages = static::where('word_id',$wordId)->get();
+            $rawImages = static::where('word_id',$word->id)->get();
         }
-        //if (count($rawImages) < 30)
+        if (count($rawImages) <= 10){
+            event(new WordCreated($word));
+            if ($counter == 0)
+              static::getByWord($word,$counter++);
+        }
         return static::normalize($rawImages);
     }
 

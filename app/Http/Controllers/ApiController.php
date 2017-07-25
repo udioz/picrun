@@ -87,9 +87,9 @@ class ApiController extends Controller
 
             if ($getImages) {
                 if ($isNew) {
-                  $images = WordImage::getByWordAsync($word->id);
+                  $images = WordImage::getByWordAsync($word);
                 } else {
-                  $images = WordImage::getByWord($word->id);
+                  $images = WordImage::getByWord($word);
                 }
             } else {
               $images = [];
