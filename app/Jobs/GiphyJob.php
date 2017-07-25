@@ -53,10 +53,13 @@ class GiphyJob extends Job
               //Log::info($this->word->id . ' Item Link: ',['link' => $item->link]);
               $wordImage = new WordImage;
               $wordImage->word_id = $this->word->id;
-              $wordImage->url = $item->images->downsized_small->mp4;
-              $wordImage->image_file_size = $item->images->downsized_small->mp4_size;
-              $wordImage->image_content_type = 'video/mp4';
-              $wordImage->image_file_name = basename($item->images->downsized_small->mp4);
+              //$wordImage->url = $item->images->downsized_small->mp4;
+              $wordImage->url = $item->images->fixed_height_downsampled->webp;
+              //$wordImage->image_file_size = $item->images->downsized_small->mp4_size;
+              $wordImage->image_file_size = $item->images->fixed_height_downsampled->webp_size;
+              //$wordImage->image_content_type = 'video/mp4';
+              $wordImage->image_content_type = 'image/webp';
+              $wordImage->image_file_name = basename($wordImage->url);
               $wordImage->image_updated_at = date('Ymdhis');
               $wordImage->md5_duplicate_helper = md5($wordImage->word_id . $wordImage->url);
               $wordImage->image_type = 'g';

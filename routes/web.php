@@ -80,3 +80,18 @@ $app->get('/videos/{phrase}', function ($phrase) use ($app) {
 
     return $response;
 });
+
+$app->get('/gifs/{phrase}', function ($phrase) use ($app) {
+    $phrase = trim(urldecode($phrase));
+
+    $data = [
+      'q' => $phrase,
+      'api_key' => config('picrun.giphy_api_key'),
+    ];
+
+    $response = Curl::to(config('picrun.giphy_api_url'))
+        ->withData($data)
+        ->get();
+
+    return $response;
+});
