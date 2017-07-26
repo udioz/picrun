@@ -52,11 +52,14 @@ final class WordImage extends Model
         } else {
             $rawImages = static::where('word_id',$word->id)->get();
         }
+
         if (count($rawImages) <= 10 ){
-            event(new WordCreated($word));
             Log::info($word->id .' '. $word->name . ' 2nd',compact('counter'));
-            if ($counter == 0)
-              static::getByWord($word,1);
+            if ($counter == 0) {
+              event(new WordCreated($word));
+              //static::getByWord($word,1);
+              static::getByWordAsync($word);
+            }
         }
         return static::normalize($rawImages);
     }

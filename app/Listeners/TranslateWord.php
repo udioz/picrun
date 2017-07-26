@@ -39,7 +39,7 @@ class TranslateWord
               ['word','=',$event->word->name],
               ['language_code','=',$event->word->language]
             ])->first();
-
+          
           if ($dictionary) {
             if ($event->word->language == 'en') {
                 $event->word->englishTranslatedWord = $event->word->name;
