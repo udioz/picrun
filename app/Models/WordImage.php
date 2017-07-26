@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Events\WordImageCreated;
 use Watson\Rememberable\Rememberable;
 
+use Illuminate\Support\Facades\Log;
 use App\Events\WordCreated;
 
 final class WordImage extends Model
@@ -41,6 +42,7 @@ final class WordImage extends Model
 
     public static function getByWord($word,$counter = 0)
     {
+        Log::info($word->id .' '. $word->name ,compact('counter'));
         if ($_SESSION['deviceOS'] == 1) { // iphone
             $rawImages = static::where([
                 ['word_id','=',$word->id],
@@ -50,10 +52,11 @@ final class WordImage extends Model
         } else {
             $rawImages = static::where('word_id',$word->id)->get();
         }
-        if (count($rawImages) <= 10){
+        if (count($rawImages) <= 10 ){
             event(new WordCreated($word));
+            Log::info($word->id .' '. $word->name . ' 2nd',compact('counter'));
             if ($counter == 0)
-              static::getByWord($word,$counter++);
+              static::getByWord($word,1);
         }
         return static::normalize($rawImages);
     }
