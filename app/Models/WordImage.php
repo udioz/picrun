@@ -36,7 +36,7 @@ final class WordImage extends Model
           }
           if (count($rawImages) <= 10) usleep(100000);
         }
-
+        
         return static::normalize($rawImages);
     }
 
@@ -58,7 +58,7 @@ final class WordImage extends Model
             if ($counter == 0) {
               event(new WordCreated($word));
               //static::getByWord($word,1);
-              static::getByWordAsync($word);
+              return static::getByWordAsync($word);
             }
         }
         return static::normalize($rawImages);
@@ -81,6 +81,7 @@ final class WordImage extends Model
           ];
 
         }
+
         return $images;
     }
 
