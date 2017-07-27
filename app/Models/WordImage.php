@@ -10,6 +10,7 @@ use Watson\Rememberable\Rememberable;
 
 use Illuminate\Support\Facades\Log;
 use App\Events\WordCreated;
+use DB;
 
 final class WordImage extends Model
 {
@@ -23,7 +24,7 @@ final class WordImage extends Model
         $counter=1;
         $rawImages = [];
 
-        while (count($rawImages) <= 10 && $counter < 20) {
+        while (count($rawImages) <= 10 && $counter < 30) {
           $counter++;
           if ($_SESSION['deviceOS'] == 1) { // iphone
               $rawImages = static::where([
@@ -36,13 +37,12 @@ final class WordImage extends Model
           }
           if (count($rawImages) <= 10) usleep(100000);
         }
-        
+
         return static::normalize($rawImages);
     }
 
-    public static function getByWord($word,$counter = 0)
+    public static function getByWord($word)
     {
-        Log::info($word->id .' '. $word->name ,compact('counter'));
         if ($_SESSION['deviceOS'] == 1) { // iphone
             $rawImages = static::where([
                 ['word_id','=',$word->id],
@@ -53,13 +53,9 @@ final class WordImage extends Model
             $rawImages = static::where('word_id',$word->id)->get();
         }
 
-        if (count($rawImages) <= 10 ){
-            Log::info($word->id .' '. $word->name . ' 2nd',compact('counter'));
-            if ($counter == 0) {
-              event(new WordCreated($word));
-              //static::getByWord($word,1);
-              return static::getByWordAsync($word);
-            }
+        if (!static::enough($word->id)){
+            event(new WordCreated($word));
+            return static::getByWordAsync($word);
         }
         return static::normalize($rawImages);
     }
@@ -82,8 +78,42 @@ final class WordImage extends Model
 
         }
 
+        shuffle($images);
         return $images;
     }
 
+    protected static function enough($wordID) {
+      $enough = true;
+
+      $imageTypeCounts = DB::table('word_images')
+                   ->select(DB::raw('count(*) as count, image_type'))
+                   ->where('word_id', $wordID)
+                   ->groupBy('image_type')
+                   ->get();
+
+       $counts=[];
+       foreach ($imageTypeCounts as $item){
+         $counts[$item->image_type] = $item->count;
+       }
+
+       if (!isset($counts['gs'])
+          || !isset($counts['i'])
+          || !isset($counts['s'])) {
+          $enough = false;
+       }
+
+       if ($_SESSION['deviceOS'] != 1 && !isset($counts['g'])){
+          $enough = false;
+       }
+
+
+       if (isset($counts['i'])) {
+         if ($counts['i'] < 10) {
+           $enough = false;
+         }
+       }
+
+       return $enough;
+    }
 
 }

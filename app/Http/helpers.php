@@ -6,6 +6,7 @@ function phrase_sanitize($phrase) {
   $phrase = str_replace('.',' ',$phrase);
   $phrase = preg_replace('/[^\w\s]+/u','' , $phrase);
   $phrase = preg_replace('!\s+!', ' ', $phrase);
+  $phrase = trim($phrase);
   return $phrase;
 }
 

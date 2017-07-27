@@ -63,6 +63,10 @@ class CreateMediaForWord
             $job->onQueue('google_curls');
             dispatch($job);
 
+            $job = new GiphyJob($event->word,'stickers');
+            $job->onQueue('google_curls');
+            dispatch($job);
+
 
             for ($i=1 ; $i <= 2 ; $i++) {
               $job = new GoogleImagesJob($event->word,$i,'stickers');//->onQueue('google_curls');

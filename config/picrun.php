@@ -25,8 +25,9 @@ return [
 
   'aws_path'  => 'http://' . env('AWS_BUCKET') . env('AWS_URL'),
 
-  'giphy_api_url' => env('GIPHY_API_URL'),
   'giphy_api_key' => env('GIPHY_API_KEY'),
+  'giphy_api_url' => env('GIPHY_API_URL'),
+  'giphy_stickers_api_url' => env('GIPHY_STICKERS_API_URL'),
 
   'supported_languages' => env('PICRUN_SUPPORTED_LANGUAGES'),
 

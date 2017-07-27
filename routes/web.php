@@ -21,9 +21,7 @@ $app->get('/admin/wordImages/{phrase}', function ($phrase) use ($app) {
 });
 
 $app->get('/', function () use ($app) {
-    $url = 'https://media2.giphy.com/media/hpnvqznpFPFlK/giphy-downsized-small.mp4';
-    //Storage::disk('local')->put()
-    Storage::put('2017/07/16/udi.mp4',file_get_contents($url),'public');
+  return 'Picrun';
 });
 
 $app->get('/translate/{phrase}', function ($phrase) use ($app) {
@@ -90,6 +88,21 @@ $app->get('/gifs/{phrase}', function ($phrase) use ($app) {
     ];
 
     $response = Curl::to(config('picrun.giphy_api_url'))
+        ->withData($data)
+        ->get();
+
+    return $response;
+});
+
+$app->get('/stickers/{phrase}', function ($phrase) use ($app) {
+    $phrase = trim(urldecode($phrase));
+
+    $data = [
+      'q' => $phrase,
+      'api_key' => config('picrun.giphy_api_key'),
+    ];
+
+    $response = Curl::to(config('picrun.giphy_stickers_api_url'))
         ->withData($data)
         ->get();
 

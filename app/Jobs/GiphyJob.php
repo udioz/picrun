@@ -14,11 +14,13 @@ class GiphyJob extends Job
 
     protected $word;
     protected $englishTranslatedWord;
+    protected $extra;
 
-    public function __construct($word)
+    public function __construct($word,$extra = '')
     {
         $this->word = $word;
         $this->englishTranslatedWord = $this->word->englishTranslatedWord;
+        $this->extra = $extra;
     }
 
     /**
@@ -29,6 +31,8 @@ class GiphyJob extends Job
     public function handle()
     {
         $phrase = trim($this->englishTranslatedWord);
+        $apiUrl  = ($this->extra == 'stickers') ? config('picrun.giphy_stickers_api_url') : config('picrun.giphy_api_url');
+        $imageType  = ($this->extra == 'stickers') ? 'gs' : 'g';
 
         if (empty($phrase)) return;
 
@@ -37,9 +41,9 @@ class GiphyJob extends Job
           'api_key' => config('picrun.giphy_api_key'),
         ];
 
-        Log::info($this->word->id . ' Request Giphy API: ',$data);
+        Log::info($this->word->id . ' Stickers Request Giphy API: ',$data);
 
-        $response = Curl::to(config('picrun.giphy_api_url'))
+        $response = Curl::to($apiUrl)
             ->withData($data)
             ->get();
 
@@ -68,7 +72,7 @@ class GiphyJob extends Job
               $wordImage->image_file_name = basename($wordImage->url);
               $wordImage->image_updated_at = date('Ymdhis');
               $wordImage->md5_duplicate_helper = md5($wordImage->word_id . $wordImage->url);
-              $wordImage->image_type = 'g';
+              $wordImage->image_type = $imageType;
               $wordImage->save();
             } catch (\Exception $e) {
                 if ($e->getCode() == '23000') {
