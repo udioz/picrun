@@ -38,6 +38,8 @@ class ApiController extends Controller
         if ($wordsCount > 1)
             $words[] = $phrase;
 
+        $words = array_unique($words);
+
         foreach($words as $phrasePart)
         {
             $word = Word::where('name',$phrasePart)->first();
@@ -104,7 +106,7 @@ class ApiController extends Controller
             } else {
               $videos=[];
             }
-            
+
             if (($getImages && count($images) > 0) || ($getVideos && count($videos) > 0)) {
               $response[] = [
                   'en' => $word->englishTranslatedWord,
