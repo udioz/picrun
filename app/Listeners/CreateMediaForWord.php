@@ -83,5 +83,8 @@ class CreateMediaForWord
             }
         }
 
+        $event->word->satisfied = true;
+        $event->word->save();
+
     } // end function handle
 }

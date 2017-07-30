@@ -53,7 +53,7 @@ final class WordImage extends Model
             $rawImages = static::where('word_id',$word->id)->get();
         }
 
-        if (!static::enough($word->id)){
+        if (!$word->satisfied && !static::enough($word->id)){
             event(new WordCreated($word));
             return static::getByWordAsync($word);
         }

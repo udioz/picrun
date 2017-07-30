@@ -46,14 +46,25 @@ class GoogleVideosJob extends Job
 
         foreach (json_decode($response)->items as $item) {
             if (isset($item->pagemap)) {
+              try {
                 $wordVideo = new WordVideo;
                 $wordVideo->word_id = $this->word->id;
                 $wordVideo->title = $item->title;
                 $wordVideo->preview_url = $item->pagemap->cse_thumbnail[0]->src;
                 $wordVideo->url = $item->link;
+                $wordVideo->md5_duplicate_helper = md5($wordVideo->word_id . $wordVideo->url);
                 $wordVideo->save();
-            }
-        }
 
+              } catch (\Exception $e) {
+
+                  if ($e->getCode() == '23000') {
+                      Log::info($this->word->id . ' Duplicate video detected',['md5' => md5($wordVideo->word_id . $wordVideo->url)]);
+                  }
+
+              }
+
+            }
+
+        }
     }
 }
