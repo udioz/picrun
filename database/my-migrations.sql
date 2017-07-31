@@ -9,3 +9,10 @@ update word_images set image_type='i' where image_type is null;
 
 /* 21/7 */
 alter table dictionary modify is_noun tinyint(1);
+
+/* 30/7 */
+alter table word_videos add md5_duplicate_helper varchar(255);
+update word_videos set md5_duplicate_helper = md5(id);
+alter table word_videos add unique key idx_md5_duplicate_helper (md5_duplicate_helper);
+
+alter table words add satisfied tinyint(1) not null default 0;

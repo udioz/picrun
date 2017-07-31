@@ -8,6 +8,7 @@ return [
   'google_videos_cx' => env('GOOGLE_VIDEOS_CX'),
   'google_translate_api_url' => env('GOOGLE_TRANSLATE_API_URL'),
   'google_detect_api_url' => env('GOOGLE_DETECT_API_URL'),
+  'youtube_search_api_url' => env('YOUTUBE_SEARCH_API_URL'),
 
   'google_images_required' => 20,
   'google_gifs_required' => 10,
