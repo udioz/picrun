@@ -56,7 +56,7 @@ class GoogleVideosJob extends Job
                 $wordVideo = new WordVideo;
                 $wordVideo->word_id = $this->word->id;
                 $wordVideo->title = $item->snippet->title;
-                $wordVideo->preview_url = $item->snippet->thumbnails->default->url;
+                $wordVideo->preview_url = $item->snippet->thumbnails->high->url;
                 $wordVideo->url = 'https://www.youtube.com/watch?v=' . $item->id->videoId;
                 $wordVideo->md5_duplicate_helper = md5($wordVideo->word_id . $wordVideo->url);
                 $wordVideo->save();
