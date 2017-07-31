@@ -23,7 +23,7 @@ $app->get('/admin/wordImages/{phrase}', function ($phrase) use ($app) {
 $app->get('/', function () use ($app) {
   return 'Picrun';
 });
-// 
+//
 // $app->get('/translate/{phrase}', function ($phrase) use ($app) {
 //
 //     // $data = [
@@ -60,24 +60,24 @@ $app->get('/', function () use ($app) {
 //     return $response;
 // });
 //
-// $app->get('/videos/{phrase}', function ($phrase) use ($app) {
-//     $phrase = trim(urldecode($phrase));
-//
-//     $data = [
-//       'q' => $phrase,
-//       'key' => config('picrun.googleapis_key'),
-//       'part' => 'snippet',
-//       'maxResults' => 30
-//     ];
-//
-//     $response = Curl::to(config('picrun.youtube_search_api_url'))
-//         ->withData($data)
-//         ->get();
-//
-//     $response = json_decode($response);
-//
-//     return $response;
-// });
+$app->get('/videos/{phrase}', function ($phrase) use ($app) {
+    $phrase = trim(urldecode($phrase));
+
+    $data = [
+      'q' => $phrase,
+      'key' => config('picrun.googleapis_key'),
+      'part' => 'snippet',
+      'maxResults' => 30
+    ];
+
+    $response = Curl::to(config('picrun.youtube_search_api_url'))
+        ->withData($data)
+        ->get();
+
+//    $response = json_decode($response);
+
+    return $response;
+});
 //
 // $app->get('/gifs/{phrase}', function ($phrase) use ($app) {
 //     $phrase = trim(urldecode($phrase));

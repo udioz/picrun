@@ -24,7 +24,7 @@ final class WordImage extends Model
         $counter=1;
         $rawImages = [];
 
-        while (count($rawImages) <= 10 && $counter < 30) {
+        while (count($rawImages) <= 10 && $counter < 40) {
           $counter++;
           if ($_SESSION['deviceOS'] == 1) { // iphone
               $rawImages = static::where([
