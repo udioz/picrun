@@ -76,7 +76,7 @@ class CreateMediaForWord
         }
 
         if ($getVideos) {
-          $job = new GoogleVideosJob($event->word,$i);
+          $job = new GoogleVideosJob($event->word);
           $job->onQueue('google_curls');
           dispatch($job);
         }

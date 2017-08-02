@@ -15,7 +15,7 @@ class GoogleVideosJob extends Job
     protected $page;
     protected $word;
 
-    public function __construct($word,$page)
+    public function __construct($word,$page = 1)
     {
         $this->page = $page;
         $this->word = $word;
