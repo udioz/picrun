@@ -29,7 +29,8 @@ final class WordImage extends Model
           if ($_SESSION['deviceOS'] == 1) { // iphone
               $rawImages = static::where([
                   ['word_id','=',$word->id],
-                  ['image_type','!=','g']
+                  ['image_type','!=','g'],
+                  ['image_type','!=','gs']
                 ])
                 ->get();
           } else {
@@ -46,7 +47,8 @@ final class WordImage extends Model
         if ($_SESSION['deviceOS'] == 1) { // iphone
             $rawImages = static::where([
                 ['word_id','=',$word->id],
-                ['image_type','!=','g']
+                ['image_type','!=','g'],
+                ['image_type','!=','gs']
               ])
               ->get();
         } else {
