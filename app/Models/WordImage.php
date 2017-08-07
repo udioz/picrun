@@ -98,8 +98,7 @@ final class WordImage extends Model
          $counts[$item->image_type] = $item->count;
        }
 
-       if (!isset($counts['gs'])
-          || !isset($counts['i'])
+       if (!isset($counts['i'])
           || !isset($counts['s'])) {
           $enough = false;
        }
