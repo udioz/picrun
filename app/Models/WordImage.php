@@ -65,6 +65,7 @@ final class WordImage extends Model
     protected static function normalize($rawImages)
     {
         $images = array();
+        $rawImages = static::dilutize($rawImages);
 
         foreach ($rawImages as $image) {
           if (isset($image->s3_path)){
@@ -83,6 +84,25 @@ final class WordImage extends Model
         shuffle($images);
         return $images;
     }
+
+    protected static function dilutize($rawImages) {
+      foreach ($rawImages as $image) {
+          if ($image->image_type == 'g') {
+            $gifImages[] = $image;
+          } else {
+            $otherImages[] = $image;
+          }
+      }
+
+      if (!isset($gifImages)) return $rawImages;
+
+      shuffle($gifImages);
+      $gifImages = array_slice($gifImages,0,6);
+
+      return array_merge($otherImages,$gifImages);
+
+    }
+
 
     protected static function enough($wordID) {
       $enough = true;
