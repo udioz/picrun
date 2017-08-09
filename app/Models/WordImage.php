@@ -86,6 +86,7 @@ final class WordImage extends Model
     }
 
     protected static function dilutize($rawImages) {
+      $otherImages = array();
       foreach ($rawImages as $image) {
           if ($image->image_type == 'g') {
             $gifImages[] = $image;
