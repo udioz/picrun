@@ -47,7 +47,7 @@ class CreateMediaForWord
         }
 
         if ($getImages) {
-            for ($i=1 ; $i <= 4 ; $i++) {
+            for ($i=1 ; $i <= 3 ; $i++) {
                 $job = new GoogleImagesJob($event->word,$i);
                 $job->onQueue('google_curls');
                 dispatch($job);

@@ -37,8 +37,8 @@ class GoogleImagesJob extends Job
           'searchType' => 'image',
           'imgType' => 'photo',
           'fields' => 'items(link,mime,image(byteSize))',
-          'imgSize' => $imgSize,
-          'fileType' => $fileType,
+          // 'imgSize' => $imgSize,
+          // 'fileType' => $fileType,
           'num' => 10,
           'start' => $this->page
         ];
@@ -53,27 +53,25 @@ class GoogleImagesJob extends Job
 
         foreach(json_decode($response)->items as $item)
         {
-            if (($item->image->byteSize > config('picrun.google_min_bytesize')))
-            {
-                try {
+            if ($item->mime == 'image/' || $item->mime == 'image/gif') continue;
+            if ($item->image->byteSize > config('picrun.google_max_bytesize')) continue;
 
-                  $wordImage = new WordImage;
-                  $wordImage->word_id = $this->word->id;
-                  $wordImage->url = $item->link;
-                  $wordImage->image_file_size = $item->image->byteSize;
-                  $wordImage->image_content_type = $item->mime;
-                  $wordImage->image_file_name = basename($item->link);
-                  $wordImage->image_updated_at = date('Ymdhis');
-                  $wordImage->md5_duplicate_helper = md5($wordImage->word_id . $wordImage->url);
-                  $wordImage->image_type = $imageType;
-                  $wordImage->save();
+            try {
+              $wordImage = new WordImage;
+              $wordImage->word_id = $this->word->id;
+              $wordImage->url = $item->link;
+              $wordImage->image_file_size = $item->image->byteSize;
+              $wordImage->image_content_type = $item->mime;
+              $wordImage->image_file_name = basename($item->link);
+              $wordImage->image_updated_at = date('Ymdhis');
+              $wordImage->md5_duplicate_helper = md5($wordImage->word_id . $wordImage->url);
+              $wordImage->image_type = $imageType;
+              $wordImage->save();
 
-                } catch (\Exception $e) {
+            } catch (\Exception $e) {
 
-                    if ($e->getCode() == '23000') {
-                        Log::info($this->word->id . ' Duplicate detected',['md5' => md5($wordImage->word_id . $wordImage->url)]);
-                    }
-
+                if ($e->getCode() == '23000') {
+                    Log::info($this->word->id . ' Duplicate detected',['md5' => md5($wordImage->word_id . $wordImage->url)]);
                 }
             }
         }
