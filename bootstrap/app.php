@@ -112,5 +112,6 @@ $app->configure('app');
 $app->configure('picrun');
 $app->configure('filesystems');
 $app->configure('queue');
+$app->configure('database');
 
 return $app;

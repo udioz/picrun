@@ -21,7 +21,23 @@ $app->get('/admin/wordImages/{phrase}', function ($phrase) use ($app) {
 });
 
 $app->get('/', function () use ($app) {
-  return 'Picrun';
+
+  //
+  // $url = 'https://lh3.googleusercontent.com/Ausn4rFl7m4Y2f0VITFvGeaJU2eE6-ZbhVDWNRth_6LucDHOzKh_ZhnVOA1Ex17DcQ=h900';
+  // $url = "http://gaia.adage.com/images/bin/image/jumbo/20151026_AA_LennyLogoBG3x2_crHearstDigitalGroup.jpg";
+  // $size = 469366;
+  //
+  // if ($size > 250000) {
+  //   $ratio = 250000/$size * 100;
+  //   //dump($ratio);
+  //
+  //   $img = Image::make($url)
+  //             ->stream('jpg',100); // <-- Key point
+  //   Storage::disk('local')
+  //             ->put('test.jpg', (string) $img, 'public');
+  //   //dump(Storage::disk('local')->size('test.jpg '));
+  //
+  // }
 });
 //
 // $app->get('/translate/{phrase}', function ($phrase) use ($app) {

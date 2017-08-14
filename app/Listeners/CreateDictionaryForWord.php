@@ -25,31 +25,35 @@ class CreateDictionaryForWord
     {
         // Go to yandex only for words (not phrases) and when the input is 3 words and above.
         if (!$event->word->isPhrase && $event->word->phraseWordsCount >= 3) {
-
+          $isNoun = 1;
+          
           //$dictionary = Dictionary::where('word',$event->word->name)->first();
           $dictionary = Dictionary::where([
               ['word','=',$event->word->name],
               ['language_code','=',$event->word->language]
             ])->first();
 
+          if (isset($dictionary)) {
+            if ($dictionary->is_noun === null) {
 
-          if ($dictionary->is_noun === null) {
+                $response = $this->yandexService->dictionary($event->word->englishTranslatedWord);
 
-              $response = $this->yandexService->dictionary($event->word->englishTranslatedWord);
+                $response = json_decode($response);
 
-              $response = json_decode($response);
+                if (is_object($response)) {
+                    $isNoun = isset($response->def[0]->pos) ? $response->def[0]->pos : true;
+                } else {
+                    $isNoun = 'noun';
+                }
 
-              if (is_object($response)) {
-                  $isNoun = isset($response->def[0]->pos) ? $response->def[0]->pos : true;
-              } else {
-                  $isNoun = 'noun';
-              }
+                $dictionary->is_noun = ($isNoun == 'noun');
+                $dictionary->save();
+                $isNoun = $dictionary->is_noun;
 
-              $dictionary->is_noun = ($isNoun == 'noun');
-              $dictionary->save();
-
+            }
           }
-          $event->word->is_noun = $dictionary->is_noun;
+
+          $event->word->is_noun = $isNoun;
           $event->word->save();
         }
     } // end function handle
