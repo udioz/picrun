@@ -33,7 +33,7 @@ class TransferWordsOld2New extends Command
           ->orderBy('id')->chunk($this->argument('chunk'),function($wordsFromOld){
             foreach ($wordsFromOld as $wordFromOld)
             {
-                Log::info('Start processing',['word'=>$wordFromOld->name]);
+                Log::info('Start processing',[$wordFromOld->id => $wordFromOld->name]);
 
                 // Check if word exist in new server
                 $wordFromNew = DB::table('words')->where('name',$wordFromOld->name)->first();
@@ -117,7 +117,7 @@ class TransferWordsOld2New extends Command
 
                 }
 
-                Log::info('End processing',['word'=>$wordFromOld->name]);
+                Log::info('End processing',[$wordFromOld->id => $wordFromOld->name]);
             } // end foreach
 
             if ($this->option('chunkonly'))
