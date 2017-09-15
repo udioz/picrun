@@ -18,6 +18,16 @@
         "watson/rememberable": "^2.0",
         "laravelista/lumen-vendor-publish": "^2.0"
     },
+    "repositories":
+      [
+        {
+          "type": "composer",
+          "url": "https:\/\/www.phpclasses.org\/"
+        },
+        {
+          "packagist": false
+        }
+      ],
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "phpunit/phpunit": "~5.0",

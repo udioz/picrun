@@ -30,12 +30,31 @@ class SaveWordImage implements ShouldQueue
           $path = $event->wordImage->created_at->format('Y/m/d/') .
                  $event->wordImage->id . '.' . $suffix;
           $isGif = ($event->wordImage->image_type == 'g');
+          $resized = false;
 
           if (!$isGif) {
 
-              $img = Image::make($event->wordImage->url)
-                        ->stream($suffix); // <-- Key point
+              if ($event->wordImage->image_file_size > config('picrun.google_max_bytesize')) {
+                $newWidth = ($width > 600) ? 600 : 300;
+
+                $img = Image::make($event->wordImage->url)->resize($newWidth,null,function ($constraint) {
+                $constraint->aspectRatio();
+                })->stream();
+
+                $resized = true;
+
+              } else {
+                $img = Image::make($event->wordImage->url)
+                          ->stream($suffix); // <-- Key point
+              }
+
               Storage::put($path, (string) $img, 'public');
+
+              if ($resized){
+                $event->wordImage->image_file_size = Storage::size($path);
+                $event->wordImage->width = $newWidth;
+              }
+
 
           } else { // isGif == true
 

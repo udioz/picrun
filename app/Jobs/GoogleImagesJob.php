@@ -5,6 +5,7 @@ namespace App\Jobs;
 use Curl;
 use App\Models\WordImage;
 use Illuminate\Support\Facades\Log;
+use Intervention\Image\Facades\Image;
 
 
 class GoogleImagesJob extends Job
@@ -36,7 +37,7 @@ class GoogleImagesJob extends Job
           'key' => config('picrun.googleapis_key'),
           'searchType' => 'image',
           'imgType' => 'photo',
-          'fields' => 'items(link,mime,image(byteSize))',
+          'fields' => 'items(link,mime,image(byteSize,width))',
           // 'imgSize' => $imgSize,
           // 'fileType' => $fileType,
           'num' => 10,
@@ -53,14 +54,18 @@ class GoogleImagesJob extends Job
 
         foreach(json_decode($response)->items as $item)
         {
-            if ($item->mime == 'image/' || $item->mime == 'image/gif') continue;
-            if ($item->image->byteSize > config('picrun.google_max_bytesize')) continue;
+            if ($item->mime == 'image/gif') continue;
+
+            if ($item->mime == 'image/') {
+              $item->mime = Image::make($item->link)->mime();
+            }
 
             try {
               $wordImage = new WordImage;
               $wordImage->word_id = $this->word->id;
               $wordImage->url = $item->link;
               $wordImage->image_file_size = $item->image->byteSize;
+              $wordImage->width = $item->image->width;
               $wordImage->image_content_type = $item->mime;
               $wordImage->image_file_name = basename($item->link);
               $wordImage->image_updated_at = date('Ymdhis');

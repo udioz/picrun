@@ -14,7 +14,7 @@ return [
   'google_gifs_required' => 10,
   'google_stickers_required' => 10,
   'google_min_bytesize' => 15000,
-  'google_max_bytesize' => 500000,
+  'google_max_bytesize' => 100000,
 
   'yandexapis_translate_key' => env('YANDEXAPIS_TRANSLATE_KEY'),
   'yandexapis_translate_url' => env('YANDEXAPIS_TRANSLATE_URL'),
