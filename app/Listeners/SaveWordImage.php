@@ -35,7 +35,7 @@ class SaveWordImage implements ShouldQueue
           if (!$isGif) {
 
               if ($event->wordImage->image_file_size > config('picrun.google_max_bytesize')) {
-                $newWidth = ($width > 600) ? 600 : 300;
+                $newWidth = ($event->wordImage->width > 600) ? 600 : 300;
 
                 $img = Image::make($event->wordImage->url)->resize($newWidth,null,function ($constraint) {
                 $constraint->aspectRatio();
