@@ -37,7 +37,7 @@ final class WordImage extends Model
               $rawImages = static::where('word_id',$word->id)->get();
           }
           //$rawImages = static::where('word_id',$word->id)->get();
-          if (count($rawImages) <= 10) usleep(100000);
+          if (count($rawImages) <= 10) usleep(200000);
         }
 
         return static::normalize($rawImages);
