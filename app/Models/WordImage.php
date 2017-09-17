@@ -23,8 +23,9 @@ final class WordImage extends Model
     public static function getByWordAsync($word){
         $counter=1;
         $rawImages = [];
+        $onlyGifs = true;
 
-        while (count($rawImages) <= 10 && $counter < 40) {
+        while ((count($rawImages) <= 10 || $onlyGifs) && $counter < 40) {
           $counter++;
           if ($_SESSION['deviceOS'] == 3) { // iphone
               $rawImages = static::where([
@@ -37,9 +38,15 @@ final class WordImage extends Model
               $rawImages = static::where('word_id',$word->id)->get();
           }
           //$rawImages = static::where('word_id',$word->id)->get();
-          if (count($rawImages) <= 10) usleep(200000);
+          foreach ($rawImages as $image) {
+            if ($image->image_type != 'g') {
+              $onlyGifs = false;
+              break;
+            }
+          }
+          if (count($rawImages) <= 10 || $onlyGifs) usleep(100000);
         }
-
+        
         return static::normalize($rawImages);
     }
 
@@ -127,7 +134,7 @@ final class WordImage extends Model
           $enough = false;
        }
 
-       if ($_SESSION['deviceOS'] != 1 && !isset($counts['g'])){
+       if ($_SESSION['deviceOS'] != 3 && !isset($counts['g'])){
           $enough = false;
        }
 

@@ -41,7 +41,7 @@ class GiphyJob extends Job
           'api_key' => config('picrun.giphy_api_key'),
         ];
 
-        Log::info($this->word->id . ' Stickers Request Giphy API: ',$data);
+        Log::info($this->word->id . ' Request Giphy API: ',$data);
 
         $response = Curl::to($apiUrl)
             ->withData($data)
