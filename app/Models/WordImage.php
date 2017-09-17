@@ -26,17 +26,17 @@ final class WordImage extends Model
 
         while (count($rawImages) <= 10 && $counter < 40) {
           $counter++;
-          // if ($_SESSION['deviceOS'] == 1) { // iphone
-          //     $rawImages = static::where([
-          //         ['word_id','=',$word->id],
-          //         ['image_type','!=','g'],
-          //         ['image_type','!=','gs']
-          //       ])
-          //       ->get();
-          // } else {
-          //     $rawImages = static::where('word_id',$word->id)->get();
-          // }
-          $rawImages = static::where('word_id',$word->id)->get();
+          if ($_SESSION['deviceOS'] == 3) { // iphone
+              $rawImages = static::where([
+                  ['word_id','=',$word->id],
+                  ['image_type','!=','g'],
+                  ['image_type','!=','gs']
+                ])
+                ->get();
+          } else {
+              $rawImages = static::where('word_id',$word->id)->get();
+          }
+          //$rawImages = static::where('word_id',$word->id)->get();
           if (count($rawImages) <= 10) usleep(100000);
         }
 
@@ -45,18 +45,18 @@ final class WordImage extends Model
 
     public static function getByWord($word)
     {
-        // if ($_SESSION['deviceOS'] == 1) { // iphone
-        //     $rawImages = static::where([
-        //         ['word_id','=',$word->id],
-        //         ['image_type','!=','g'],
-        //         ['image_type','!=','gs']
-        //       ])
-        //       ->get();
-        // } else {
-        //     $rawImages = static::where('word_id',$word->id)->get();
-        // }
+        if ($_SESSION['deviceOS'] == 3) { // iphone
+            $rawImages = static::where([
+                ['word_id','=',$word->id],
+                ['image_type','!=','g'],
+                ['image_type','!=','gs']
+              ])
+              ->get();
+        } else {
+            $rawImages = static::where('word_id',$word->id)->get();
+        }
 
-        $rawImages = static::where('word_id',$word->id)->get();
+        //$rawImages = static::where('word_id',$word->id)->get();
 
         if (!$word->satisfied && !static::enough($word->id)){
             event(new WordCreated($word));
