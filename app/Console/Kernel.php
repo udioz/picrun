@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
       Commands\CompleteWordImages::class,
       Commands\Test::class,
       Commands\TransferWordsOld2New::class,
+      Commands\UploadMissingImages::class,
       \Laravelista\LumenVendorPublish\VendorPublishCommand::class
     ];
 
